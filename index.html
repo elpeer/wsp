@@ -34,7 +34,8 @@
 [hidden]{display:none!important}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px}
-body{min-height:100vh;overflow-x:hidden}
+html,body{overflow-x:clip}
+body{min-height:100vh;overflow-x:clip}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
@@ -569,6 +570,226 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
   .top{border-radius:44px 44px 0 0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* mobile defaults for desktop-only elements */
+.top-search,.nav-brand,.nav-foot,.rail-nav{display:none}
+.feat-side .picks-sec{margin-top:26px}
+
+/* ================= DESKTOP ================= */
+@media (min-width:1024px){
+  :root{--side:252px;--g:clamp(28px,3vw,56px);--maxw:1500px}
+  body{font-size:15.5px}
+  .app,.app[class]{max-width:none;margin:0;border-radius:0;box-shadow:none;background:transparent;overflow:visible;min-height:100vh;padding:0 var(--side) 60px 0}
+  .ambient i:nth-child(1){width:620px;height:620px}.ambient i:nth-child(2){width:520px;height:520px}.ambient i:nth-child(3){width:480px;height:480px}
+  .screen>*{max-width:var(--maxw);margin-inline:auto}
+  /* gutters */
+  .top,.greet,.stories,.rail,.tabs,.chips,.sec-h,.picks,.listen,.grid,.plist,.alist,.ab-sec,.aw-hero,.aw-cat,.aw-cats,.vbody,.abody,.aboutp{padding-inline:var(--g)}
+  .hero,.vote,.sbox,.ab-stats,.aw-end{margin-inline:var(--g)}
+  .rail{scroll-padding-inline:var(--g)}
+
+  /* sidebar nav (right, RTL) */
+  .nav{top:0;bottom:0;right:0;left:auto;transform:none;width:var(--side);max-width:none;border-radius:0;flex-direction:column;align-items:stretch;gap:4px;padding:28px 18px 22px;
+    background:color-mix(in srgb,var(--solid) 78%,transparent);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:-1px 0 0 var(--line)}
+  .nav-brand{display:block;padding:0 10px 22px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+  .nav-brand b{font-family:var(--display);font-size:56px;line-height:.8;background:linear-gradient(120deg,var(--pink),#B04BD6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-brand small{display:block;font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.4}
+  .nav button{width:100%;height:50px;flex-direction:row;justify-content:flex-start;gap:14px;padding:0 16px;border-radius:16px;color:var(--ink);opacity:.72}
+  .nav button span{font-size:15px;font-weight:500}
+  .nav button svg{width:21px;height:21px}
+  .nav button:not(.on):hover{opacity:1;background:color-mix(in srgb,var(--pink) 9%,transparent)}
+  .nav button.on{width:100%;background:var(--pink);color:#fff;box-shadow:0 12px 24px -12px var(--pink)}
+  .nav button.on span{font-weight:700}
+  .nav-star:not(.on) svg{color:#E3A43A}
+  .nav-foot{display:flex;flex-direction:column;gap:12px;margin-top:auto}
+  .nav-cta{position:relative;display:flex;flex-direction:column;gap:4px;padding:18px 16px;border-radius:22px;color:#fff;overflow:hidden;
+    background:radial-gradient(120% 90% at 100% 0%,#7A1745,#2A0618);box-shadow:0 16px 30px -16px #7A1745}
+  .nav-cta::after{content:"";position:absolute;width:3px;top:-10px;bottom:-10px;left:16px;background:linear-gradient(transparent,#FF2E86,transparent);box-shadow:0 0 14px 3px rgba(255,46,134,.6);animation:neon 3s infinite alternate}
+  .nc-star{font-size:22px;color:#F0C062;filter:drop-shadow(0 0 8px rgba(240,192,98,.7))}
+  .nav-cta b{font-family:var(--display);font-size:28px;line-height:.9}
+  .nav-cta span{font-size:12px;opacity:.75;line-height:1.35}
+  .nav-cta em{font-style:normal;margin-top:8px;align-self:flex-start;padding:7px 14px;border-radius:999px;background:#FF3D8B;font-size:12.5px;font-weight:700;transition:transform .25s}
+  .nav-cta:hover em{transform:translateX(-4px)}
+  .nav-soc{display:flex;gap:6px;justify-content:center}
+  .nav-soc a{font-size:11.5px;color:var(--ink2);padding:6px 8px;border-radius:10px}
+  .nav-soc a:hover{color:var(--pink)}
+  body[data-mode="awards"] .nav{background:rgba(26,5,16,.86);box-shadow:-1px 0 0 rgba(255,90,160,.2)}
+  body[data-mode="awards"] .nav button{color:#FFD9E8}
+  body[data-mode="awards"] .nav-brand{border-color:rgba(255,90,160,.2)}
+  body[data-mode="awards"] .nav-brand small,body[data-mode="awards"] .nav-soc a{color:rgba(255,217,232,.6)}
+  body[data-mode="awards"] .nav-cta{display:none}
+
+  /* top bar */
+  .top{padding-top:22px;padding-bottom:16px;gap:14px}
+  .logo b{font-size:46px}
+  .logo small{font-size:13px}
+  #s-home .top .logo{visibility:hidden}
+  .top-search{display:flex;align-items:center;gap:12px;flex:0 1 460px;height:50px;padding:0 20px;border-radius:999px;background:var(--surface);box-shadow:0 0 0 1px var(--line);color:var(--ink2);font-size:14.5px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:box-shadow .25s}
+  .top-search:hover{box-shadow:0 0 0 2px var(--pink)}
+  .top-search svg{width:19px;height:19px}
+  #s-home .top .icon-btn[data-go="search"]{display:none}
+
+  /* home */
+  .greet h1{font-size:clamp(72px,6.4vw,112px);line-height:.86}
+  .greet p{font-size:17px;margin-top:10px}
+  .stories{gap:22px;padding-top:26px}
+  .story{width:96px;font-size:13px}.story .ring{width:96px;height:96px;border-radius:32px}.story .ring>div{border-radius:29px}
+  .feat{display:grid;grid-template-columns:minmax(0,1fr) clamp(340px,28vw,440px);gap:24px;padding-inline:var(--g);margin-top:24px;align-items:start}
+  .feat .hero{margin:0;height:clamp(500px,40vw,640px);border-radius:40px}
+  .feat .hero h3{font-size:clamp(76px,6vw,112px)}
+  .feat .hero .sub{font-size:15px;max-width:46ch}
+  .feat .hero .meta{inset:auto 40px 36px 40px}
+  .feat .hero .tag{right:40px;top:44px;font-size:13px}
+  .feat .hero .bars{inset-inline:40px;top:24px}
+  .feat .hero .tapzone{display:none}
+  .hero-arrows{position:absolute;z-index:6;left:32px;bottom:36px;display:flex;gap:8px}
+  .hero-arrows button{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;display:grid;place-items:center;transition:background .2s,transform .2s}
+  .hero-arrows button:hover{background:rgba(255,255,255,.35);transform:scale(1.06)}
+  .hero-arrows svg{width:20px;height:20px}
+  .feat-side{display:flex;flex-direction:column;gap:18px}
+  .feat-side .vote{margin:0}
+  .feat-side .picks-sec{margin-top:0}
+  .feat-side .sec-h,.feat-side .picks{padding-inline:0}
+  .feat-side .picks{padding-top:12px}
+  .sec{margin-top:52px}
+  .sec-h h2{font-size:30px}
+  .sec-h p{font-size:14px}
+  .see{font-size:14px}
+  .c-port{width:236px;height:332px}.c-port h3{font-size:34px}
+  .c-wide{width:420px;height:262px}.c-wide h3{font-size:38px}.c-wide .sub{font-size:13px}
+  .c-reel{width:196px;height:330px}.c-reel h3{font-size:28px}
+  .acard{width:340px}.acard .ai{height:210px}.acard h3{font-size:17px}
+  .rail{gap:18px;padding-top:18px;padding-bottom:14px}
+  .tab{font-size:14px;padding:10px 18px}
+  .listen{grid-template-columns:repeat(4,minmax(0,220px))}
+  /* rail arrows */
+  .rail-wrap{position:relative}
+  .rail-nav{display:flex;gap:8px}
+  .rail-nav button{width:42px;height:42px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--line);display:grid;place-items:center;color:var(--ink);transition:all .2s}
+  .rail-nav button:hover:not([disabled]){background:var(--pink);color:#fff;box-shadow:none}
+  .rail-nav button[disabled]{opacity:.35;cursor:default}
+  .rail-nav svg{width:18px;height:18px}
+  .sec-h .see{margin-inline-start:auto}
+  .sec-h{align-items:center}
+
+  /* programs index */
+  .plist{grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:20px}
+  .prow{height:230px;border-radius:34px}.prow h3{font-size:58px}.prow p{font-size:14px}
+
+  /* program page */
+  .phead{padding:60px var(--g) 46px;border-radius:0 0 48px 48px;max-width:none!important}
+  .phead h1{font-size:110px}.phead p{font-size:17px;max-width:52ch}.phead::after{font-size:300px;bottom:-70px}
+  .phead .stats b{font-size:34px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+  .grid .card{height:330px}
+  .grid .card.big{grid-column:span 2;grid-row:span 2;height:auto;min-height:678px}
+  .grid .card.big h3{font-size:72px}
+  #s-search .grid .card.big{grid-column:auto;grid-row:auto;min-height:0;height:330px}
+  .sbox{height:64px;font-size:17px;max-width:760px}
+
+  /* video page: player + info | up next */
+  #s-video.on{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:0 32px;padding:28px var(--g) 0;max-width:calc(var(--maxw) + 0px);margin-inline:auto;align-items:start}
+  #s-video>*{max-width:none;margin:0}
+  #s-video .vhero{grid-column:1;grid-row:1;height:auto;aspect-ratio:16/9;border-radius:32px;box-shadow:var(--shadow)}
+  #s-video .vhero .shade{background:linear-gradient(to top,rgba(0,0,0,.45),transparent 40%),linear-gradient(to bottom,rgba(0,0,0,.3),transparent 25%)}
+  #s-video .vtop{top:20px;inset-inline:20px}
+  #s-video .vplay{width:110px;height:110px;margin:-55px 0 0 -55px;top:50%}
+  #s-video .vbody{grid-column:1;grid-row:2;margin-top:26px;padding:0}
+  #s-video .vbody h1{font-size:84px}
+  #s-video .vbody .role{font-size:18px}
+  #s-video .vactions{max-width:520px}
+  #s-video .about{font-size:16px}
+  #s-video .sec{grid-column:2;grid-row:1/span 2;margin:0;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;scrollbar-width:thin;padding:18px;border-radius:30px;background:var(--surface);box-shadow:0 0 0 1px var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  #s-video .sec-h{padding:0}
+  #s-video .rail{flex-direction:column;overflow:visible;padding:14px 0 0;gap:12px}
+  #s-video .rail .card{width:100%;height:190px}
+  #s-video .rail .card h3{font-size:32px}
+  #s-video .rail-nav{display:none}
+
+  /* articles */
+  .alist{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .afeat{grid-column:span 2;grid-row:span 2;height:auto;min-height:560px}
+  .afeat h3{font-size:64px}.afeat p{font-size:15px;max-width:60ch}
+  .arow{flex-direction:column;align-items:stretch;padding:10px;border-radius:26px}
+  .arow .ri{width:100%;height:190px;border-radius:18px}
+  .arow h3{font-size:16.5px}
+  .arow .rt{padding:4px 6px 6px}
+  /* article reader */
+  #s-article .ahero{height:clamp(420px,46vw,620px);max-width:none!important;border-radius:0 0 48px 48px}
+  #s-article .abody{max-width:860px;margin-top:-140px}
+  #s-article .abody h1{font-size:52px;line-height:1.1}
+  #s-article .lede{font-size:21px}
+  #s-article .readmore{max-width:380px}
+
+  /* about */
+  .ab-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-rows:auto auto auto;column-gap:40px;align-items:center;padding:60px var(--g) 0}
+  .ab-fan{grid-column:2;grid-row:1/span 3;height:520px;max-width:560px;width:100%}
+  .ab-fan .ph{width:250px;height:330px}.ab-fan .ph:nth-child(2){width:270px;height:356px;margin-left:-135px}
+  .ab-fan .sticker{font-size:15px;padding:10px 18px;margin-right:-110px}
+  .ab-kin{font-size:clamp(90px,7vw,150px)}
+  .ab-lead{font-size:19px;max-width:46ch}
+  .ab-stats{max-width:calc(var(--maxw) - 2*var(--g))!important;gap:16px;margin-top:50px}
+  .ab-stats div{padding:26px 10px}.ab-stats b{font-size:72px}.ab-stats span{font-size:14px}
+  .marq{max-width:none!important}.marq-in{font-size:56px}
+  .ab-words{font-size:clamp(30px,2.6vw,44px);max-width:32ch;line-height:1.35}
+  .ab-sec{margin-top:80px}
+  .ab-h2{font-size:clamp(64px,5.4vw,96px)}
+  .ab-story{padding:56px 60px;display:grid;grid-template-columns:1fr 1fr;gap:10px 60px;align-items:end}
+  .ab-story .eyebrow{grid-column:1/-1}
+  .ab-story h2{font-size:64px;margin:0}.ab-story p{font-size:17px;margin:0}
+  .leads{grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+  .lead,.lead:first-child{grid-column:auto;height:560px;border-radius:36px}
+  .lead h3{font-size:52px}.lead:first-child h3{font-size:64px}.lead q,.lead small{font-size:15px}
+  .tgrid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:22px}
+  .tm b{font-size:15px}.tm span{font-size:12.5px}
+  .join{grid-template-columns:repeat(4,1fr);gap:16px}.jt{padding:26px 22px}.jt b{font-size:18px}.jt span{font-size:13.5px}
+  .partners{max-width:none!important}.plogo{width:180px;height:180px}.plogo img{width:100px;height:100px}
+  .pcta{flex-direction:row;align-items:center;gap:24px;padding:34px 40px}
+  .pcta b{font-size:44px;flex:0 0 auto;max-width:14ch}.pcta span{font-size:16px;flex:1}.pcta .btn{margin:0;align-self:center}
+  #abContact{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:0 50px;align-items:start}
+  #abContact .eyebrow,#abContact .ab-h2{grid-column:1}
+  #abContact .cform{grid-column:2;grid-row:1/span 3;margin-top:0;padding:28px}
+  #abContact .social{grid-column:1;grid-row:3;margin-top:24px;max-width:420px}
+  .sheet{top:50%;bottom:auto;width:min(620px,92vw);border-radius:34px;transform:translate(-50%,-50%);animation:sheetPop .4s cubic-bezier(.2,.9,.2,1);padding:26px 28px 30px}
+  @keyframes sheetPop{from{opacity:0;transform:translate(-50%,-46%) scale(.94)}}
+  .sheet .grab{display:none}
+  .sheet .sp{width:180px;height:230px}.sheet h3{font-size:64px}
+
+  /* awards */
+  #s-awards{max-width:none}
+  #s-awards>*:not(.aw-dust):not(.aw-neon){max-width:1320px}
+  .aw-neon{height:820px}
+  .aw-neon i{height:720px}
+  .aw-neon i:nth-child(1){right:6%}.aw-neon i:nth-child(2){right:calc(6% + 34px)}.aw-neon i:nth-child(3){left:6%}.aw-neon i:nth-child(4){left:calc(6% + 34px)}
+  .aw-hero{padding-top:30px}
+  .aw-title{gap:24px;margin-top:10px}
+  .laurel{width:96px;height:230px}
+  .aw-title h1{font-size:clamp(120px,10vw,180px)}
+  .aw-year{font-size:72px;letter-spacing:14px}
+  .aw-eyebrow{font-size:14px;letter-spacing:8px}
+  .aw-sub{font-size:18px;max-width:52ch}
+  .aw-meta{max-width:720px;margin:30px auto 0;gap:14px}.aw-meta>div{padding:20px 6px}.aw-meta b{font-size:44px}.aw-ring svg{width:84px;height:84px;margin:-42px 0 0 -42px}
+  .aw-spons{font-size:13.5px;margin-top:22px}
+  .aw-cats{justify-content:center;margin-top:40px;padding-top:16px}
+  .aw-cats button{font-size:14.5px;padding:12px 20px}
+  .aw-cat{padding-top:50px}
+  .aw-cat-h h2{font-size:84px}.aw-cat-h small{font-size:13px}.aw-cat-h .st{font-size:15px}
+  .aw-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:24px}
+  .nom{border-radius:28px;padding:8px}.nom .np{border-radius:22px}.nom .nn b{font-size:38px}.nom .nn span{font-size:14px}.nom .mono{font-size:120px}
+  .aw-act{max-width:520px;margin-inline:auto;margin-top:24px}
+  .aw-end{max-width:760px!important;margin:60px auto 0;padding:40px}
+  .aw-end h3{font-size:64px}
+}
+@media (min-width:1024px) and (max-width:1279px){
+  :root{--side:84px}
+  .nav{padding:22px 10px;align-items:center}
+  .nav-brand{padding:0 0 18px}.nav-brand b{font-size:38px}.nav-brand small{display:none}
+  .nav button{width:60px;height:60px;flex-direction:column;justify-content:center;gap:4px;padding:0}
+  .nav button span{font-size:10px}
+  .nav button.on{width:60px}
+  .nav-foot{display:none}
+  .alist{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:1700px){:root{--maxw:1680px}.c-port{width:260px;height:366px}.c-wide{width:460px;height:288px}}
 </style>
 </head>
 <body>
@@ -579,6 +800,7 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
   <section class="screen" id="s-home">
     <header class="top">
       <div class="logo"><div><b>WSP</b><small>הקול של הספורטאיות בישראל</small></div></div>
+      <button class="top-search" data-go="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>חיפוש ספורטאית, ענף או תכנית</button>
       <button class="icon-btn" data-go="search" aria-label="חיפוש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
       <button class="icon-btn dot" aria-label="התראות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
     </header>
@@ -588,13 +810,22 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
     </div>
     <div class="stories" id="stories"></div>
 
-    <div class="hero" id="hero" aria-roledescription="carousel" aria-label="מה חדש"></div>
-
-    <a class="vote" href="#awards">
-      <div class="star"><svg viewBox="0 0 24 24" fill="#fff"><path d="m12 2 2.9 6.6 7.1.6-5.4 4.7 1.6 7.1L12 17.3 5.8 21l1.6-7.1L2 9.2l7.1-.6z"/></svg></div>
-      <div><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. מי הספורטאית שלך?</span></div>
-      <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></div>
-    </a>
+    <div class="feat">
+      <div class="hero" id="hero" aria-roledescription="carousel" aria-label="מה חדש"></div>
+  
+      
+      <div class="feat-side">
+      <a class="vote" href="#awards">
+        <div class="star"><svg viewBox="0 0 24 24" fill="#fff"><path d="m12 2 2.9 6.6 7.1.6-5.4 4.7 1.6 7.1L12 17.3 5.8 21l1.6-7.1L2 9.2l7.1-.6z"/></svg></div>
+        <div><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. מי הספורטאית שלך?</span></div>
+        <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></div>
+      </a>
+    <div class="sec picks-sec">
+      <div class="sec-h"><div><h2>בחירת <span>המערכת</span></h2><p>פרקים שכדאי להתחיל מהם</p></div></div>
+      <div class="picks" id="picks"></div>
+    </div>
+      </div>
+    </div>
 
     <div class="sec">
       <div class="sec-h"><div><h2>הפודקאסט <span>הרשמי</span></h2><p>עם נועה זליבנסקי, שחקנית ליגת העל</p></div><button class="see" data-go="p-pod">הכל <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
@@ -614,10 +845,6 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
       <div class="rail" id="artRail"></div>
     </div>
 
-    <div class="sec">
-      <div class="sec-h"><div><h2>בחירת <span>המערכת</span></h2><p>פרקים שכדאי להתחיל מהם</p></div></div>
-      <div class="picks" id="picks"></div>
-    </div>
 
     <div class="sec">
       <div class="sec-h"><div><h2>קצרים <span>ומהשטח</span></h2><p>משאלי רחוב, טיפים מקצועיים וכתבות</p></div><button class="see" data-go="p-vid">הכל <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
@@ -788,12 +1015,17 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 </div>
 
 <nav class="nav" aria-label="ניווט ראשי">
+  <a class="nav-brand" href="#home"><b>WSP</b><small>Women's Sports Power<br>הקול של הספורטאיות בישראל</small></a>
   <button data-go="home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>בית</span></button>
   <button data-go="programs" data-tab="programs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7.5" height="7.5" rx="2.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2.5"/></svg><span>תכניות</span></button>
   <button data-go="p-pod" data-tab="p-pod"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span>פודקאסט</span></button>
   <button data-go="awards" data-tab="awards" class="nav-star"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 2.5 2.9 6.2 6.8.8-5 4.7 1.3 6.7L12 17.6l-6 3.3 1.3-6.7-5-4.7 6.8-.8z"/></svg><span>מצטיינות</span></button>
   <button data-go="articles" data-tab="articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M18 8h2v10a2 2 0 0 1-2 2M8 8h6M8 12h6M8 16h4"/></svg><span>כתבות</span></button>
   <button data-go="about" data-tab="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>אודות</span></button>
+  <div class="nav-foot">
+    <a class="nav-cta" href="#awards"><span class="nc-star">★</span><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. בחרו את הספורטאיות שלכן</span><em>להצבעה</em></a>
+    <div class="nav-soc"><a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@womenssportpower" target="_blank" rel="noopener">TikTok</a><a href="https://www.youtube.com/channel/UC6duCxv3pdUP6j7Ch6MZTAQ" target="_blank" rel="noopener">YouTube</a></div>
+  </div>
 </nav>
 
 <script>
@@ -1423,6 +1655,30 @@ function confetti(x,y){
     if(++t<95)requestAnimationFrame(f);else c.remove()};f();
 }
 
+
+/* ===== desktop enhancements: rail arrows + hero arrows ===== */
+const DESK=matchMedia("(min-width:1024px)");
+function railArrows(root=document){
+  root.querySelectorAll(".sec").forEach(sec=>{
+    const rail=sec.querySelector(".rail"),head=sec.querySelector(".sec-h");if(!rail||!head||head.querySelector(".rail-nav"))return;
+    const nav=document.createElement("div");nav.className="rail-nav";
+    nav.innerHTML=`<button aria-label="הקודם" data-d="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button><button aria-label="הבא" data-d="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>`;
+    head.appendChild(nav);
+    const upd=()=>{const max=rail.scrollWidth-rail.clientWidth,x=Math.abs(rail.scrollLeft);nav.children[0].disabled=x<4;nav.children[1].disabled=x>max-4};
+    nav.onclick=e=>{const b=e.target.closest("button");if(!b)return;rail.scrollBy({left:+b.dataset.d*rail.clientWidth*.8,behavior:"smooth"})};
+    rail.addEventListener("scroll",upd,{passive:true});new ResizeObserver(upd).observe(rail);new MutationObserver(()=>setTimeout(upd,60)).observe(rail,{childList:true});upd();
+  });
+}
+function heroArrows(){
+  const h=document.getElementById("hero");if(h.querySelector(".hero-arrows"))return;
+  const d=document.createElement("div");d.className="hero-arrows";
+  d.innerHTML=`<button aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button><button aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>`;
+  d.children[0].onclick=()=>heroGo(hi-1);d.children[1].onclick=()=>heroGo(hi+1);h.appendChild(d);
+}
+/* vertical mouse wheel scrolls rails horizontally when hovering them (desktop) */
+document.addEventListener("wheel",e=>{if(!DESK.matches||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;const r=e.target.closest(".rail");if(!r||r.closest("#s-video"))return;
+  const max=r.scrollWidth-r.clientWidth,x=Math.abs(r.scrollLeft);if((e.deltaY>0&&x>=max-2)||(e.deltaY<0&&x<=2))return;e.preventDefault();r.scrollLeft-=e.deltaY},{passive:false});
+
 /* ===== ROUTER (hash) with shared-element transition into the video page ===== */
 const screens=[...document.querySelectorAll(".screen")];
 let lastTap=null;
@@ -1440,6 +1696,7 @@ function route(){
   document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
   window.scrollTo(0,0);
   if(scr==="about")requestAnimationFrame(aboutEnter);
+  if(scr==="video"||scr==="article")railArrows(document.getElementById("s-"+scr));
   const was=document.body.dataset.mode;document.body.dataset.mode=scr==="awards"?"awards":"";
   if(scr==="awards"&&was!=="awards"){requestAnimationFrame(()=>{startDust();document.querySelectorAll("#awBody .nom").forEach(n=>io?io.observe(n):n.classList.add("in"))})}
 }
@@ -1450,7 +1707,7 @@ window.addEventListener("hashchange",()=>{
   else route();
 });
 
-renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();
+renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();railArrows();heroArrows();
 hydrate();route();
 </script>
 </body>
