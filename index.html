@@ -659,7 +659,7 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 /* ===== NOTIFICATIONS + INSTALL ===== */
 .icon-btn.dot.has::after{animation:live 1.6s infinite}
 .icon-btn.dot:not(.has)::after{display:none}
-.ov{position:fixed;inset:0;z-index:85;background:rgba(30,6,18,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:fade .25s}
+.mov{position:fixed;inset:0;z-index:85;background:rgba(30,6,18,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:fade .25s}
 .panel{width:100%;max-width:520px;max-height:92vh;overflow:auto;background:var(--solid);border-radius:32px 32px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:sheetUp2 .4s cubic-bezier(.2,.9,.2,1);overscroll-behavior:contain}
 .pn-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .pn-h h2{margin:0;font-family:var(--display);font-size:44px;line-height:.9}
@@ -770,7 +770,7 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 .appban .x svg{width:16px;height:16px}
 .nav-tools{display:none}
 @media (min-width:1024px){
-  .ov{align-items:stretch;justify-content:flex-start}
+  .mov{align-items:stretch;justify-content:flex-start}
   .panel{max-width:440px;max-height:none;height:100%;border-radius:0 32px 32px 0;padding:28px 26px;animation:drawer .45s cubic-bezier(.2,.9,.2,1)}
   @keyframes drawer{from{transform:translateX(-100%)}}
   #install{align-items:center;justify-content:center}
@@ -787,6 +787,12 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
   body[data-mode="awards"] .nav-tools button{background:rgba(255,255,255,.07);color:#FFD9E8}
 }
 @media (min-width:1024px) and (max-width:1279px){.nav-tools{display:none}}
+
+
+#s-search .top .icon-btn{flex:none}
+.sclear{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--ink)}
+.sclear svg{width:14px;height:14px}
+.sbox input::-webkit-search-cancel-button{display:none}
 
 /* mobile defaults for desktop-only elements */
 .top-search,.nav-brand,.nav-foot,.rail-nav{display:none}
@@ -1151,8 +1157,9 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 
   <!-- SEARCH -->
   <section class="screen" id="s-search">
-    <header class="top"><div class="logo"><div><b>חיפוש</b><small>ספורטאית, ענף, אורח או נושא</small></div></div></header>
-    <label class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="למשל: כדוריד, אולימפית, שרון קנטור" autocomplete="off"></label>
+    <header class="top"><div class="logo"><div><b>חיפוש</b><small>ספורטאית, ענף, אורח או נושא</small></div></div>
+      <button class="icon-btn" id="searchClose" aria-label="סגירת החיפוש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
+    <label class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="למשל: כדוריד, אולימפית, שרון קנטור" autocomplete="off" enterkeyhint="search"><button type="button" class="sclear" id="qClear" aria-label="ניקוי החיפוש" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M7 7l10 10M17 7 7 17"/></svg></button></label>
     <div class="chips" id="sugg"></div>
     <div class="grid" id="sres"></div>
   </section>
@@ -1263,7 +1270,7 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 
 
 <!-- ===== NOTIFICATIONS CENTER ===== -->
-<div class="ov" id="notif" hidden>
+<div class="mov" id="notif" hidden>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ntTitle">
     <div class="pn-h"><div><h2 id="ntTitle">התראות</h2><p>מה חדש ב־WSP, ומה תרצו לקבל</p></div><button class="icon-btn" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div class="pcard" id="pushCard"></div>
@@ -1275,7 +1282,7 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 </div>
 
 <!-- ===== INSTALL GUIDE ===== -->
-<div class="ov" id="install" hidden>
+<div class="mov" id="install" hidden>
   <div class="panel wide" role="dialog" aria-modal="true" aria-labelledby="inTitle">
     <div class="pn-h"><div class="in-brand"><img src="icons/icon-192.png" alt=""><div><h2 id="inTitle">WSP באפליקציה</h2><p>גישה מהירה מהמסך הראשי, בלי חנות אפליקציות</p></div></div><button class="icon-btn" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div class="perks"><span>⚡ נפתחת מהר</span><span>🔔 התראות על פרקים חדשים</span><span>📴 עובדת גם בלי קליטה</span></div>
@@ -2040,13 +2047,13 @@ function refreshInstallUI(){
 
 /* ---------- overlays ---------- */
 function openOv(id){const o=document.getElementById(id);o.hidden=false;document.body.style.overflow="hidden";if(id==="notif")renderNotif();if(id==="install")renderInstall();setTimeout(()=>o.querySelector("[data-close]")?.focus(),50)}
-function closeOv(id){const o=document.getElementById(id);if(!o||o.hidden)return;o.hidden=true;if(!document.querySelector(".ov:not([hidden])"))document.body.style.overflow="";if(id==="install")clearInterval(stepTimer)}
+function closeOv(id){const o=document.getElementById(id);if(!o||o.hidden)return;o.hidden=true;if(!document.querySelector(".mov:not([hidden])"))document.body.style.overflow="";if(id==="install")clearInterval(stepTimer)}
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");if(op){e.preventDefault();if(op.dataset.open==="install")closeOv("notif");openOv(op.dataset.open);return}
-  const cl=e.target.closest("[data-close]");if(cl){closeOv(cl.closest(".ov").id);return}
-  if(e.target.classList.contains("ov"))closeOv(e.target.id);
+  const cl=e.target.closest("[data-close]");if(cl){closeOv(cl.closest(".mov").id);return}
+  if(e.target.classList.contains("mov"))closeOv(e.target.id);
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".ov:not([hidden])").forEach(o=>closeOv(o.id))});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".mov:not([hidden])").forEach(o=>closeOv(o.id))});
 
 /* ---------- notifications center ---------- */
 const TOPICS=[
@@ -2183,10 +2190,21 @@ function maybeBanner(){
   if(isStandalone()||matchMedia("(min-width:1024px)").matches)return;
   const until=LS.get("wsp-ban-until",0);if(Date.now()<until)return;
   const visits=LS.get("wsp-visits",0)+1;LS.set("wsp-visits",visits);
-  setTimeout(()=>{if(document.querySelector(".ov:not([hidden])"))return;document.getElementById("appBanner").hidden=false},visits>1?4000:15000);
+  setTimeout(()=>{if(document.querySelector(".mov:not([hidden])"))return;document.getElementById("appBanner").hidden=false},visits>1?4000:15000);
 }
 document.getElementById("banX").onclick=()=>{document.getElementById("appBanner").hidden=true;LS.set("wsp-ban-until",Date.now()+14*864e5)};
 document.querySelector("#appBanner [data-open]").addEventListener("click",()=>document.getElementById("appBanner").hidden=true);
+
+
+/* ===== search: close, clear, focus ===== */
+let searchFrom="home";
+function closeSearch(){location.hash=searchFrom&&searchFrom!=="search"?searchFrom:"home"}
+document.getElementById("searchClose").onclick=closeSearch;
+document.getElementById("qClear").onclick=()=>{const q=document.getElementById("q");q.value="";q.dispatchEvent(new Event("input"));q.focus()};
+document.getElementById("q").addEventListener("input",e=>document.getElementById("qClear").hidden=!e.target.value);
+document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("s-search").classList.contains("on")&&!document.querySelector(".mov:not([hidden])"))closeSearch()});
+addEventListener("hashchange",e=>{const from=new URL(e.oldURL).hash.slice(1)||"home";if(location.hash==="#search"&&from!=="search")searchFrom=from;if(location.hash==="#search")setTimeout(()=>document.getElementById("q").focus({preventScroll:true}),350)});
 
 /* ===== ROUTER (hash) with shared-element transition into the video page ===== */
 const screens=[...document.querySelectorAll(".screen")];
