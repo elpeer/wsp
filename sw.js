@@ -1,6 +1,6 @@
 /* WSP service worker: offline app shell + web push */
-const VERSION = "wsp-v1";
-const SHELL = ["./", "index.html", "articles-data.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/badge-96.png"];
+const VERSION = "wsp-v2";
+const SHELL = ["/", "/app.css", "/app.js", "/data.js", "/seo.js", "/articles-data.js", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/badge-96.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -18,7 +18,7 @@ self.addEventListener("fetch", e => {
   const isImage = req.destination === "image" && /ytimg\.com|wixstatic\.com/.test(url.host);
   if (sameOrigin) {
     e.respondWith(fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return res; })
-      .catch(() => caches.match(req).then(r => r || caches.match("index.html"))));
+      .catch(() => caches.match(req).then(r => r || caches.match("/"))));
   } else if (isImage) {
     e.respondWith(caches.open(VERSION + "-img").then(c => c.match(req).then(hit => hit || fetch(req).then(res => { if (res.ok || res.type === "opaque") c.put(req, res.clone()); return res; }))));
   }

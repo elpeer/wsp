@@ -16,3 +16,12 @@
   להכניס את המפתח הציבורי ל־`PUSH.vapidPublicKey` וכתובת שמירת מנויים ל־`PUSH.subscribeUrl` ב־`index.html`.
   השרת שומר את ה־subscription + הנושאים, ושולח הודעות בפורמט JSON: `{title, body, url, image, tag}`.
 - באייפון התראות עובדות רק אחרי התקנה למסך הבית (iOS 16.4+). ההתקנה וה־Service Worker דורשים HTTPS.
+
+## מבנה ו־SEO
+- `index.html` (מעטפת) · `app.css` · `app.js` · `data.js` (תכניות ופרקים) · `articles-data.js` (כתבות מלאות) · `seo.js` (כתובות, מטא, פירורי לחם, JSON-LD).
+- כתובות אמיתיות: `/podcast`, `/programs/<slug>`, `/video/<youtubeId>`, `/articles/<slug>`, `/awards`, `/about`, `/search?q=`.
+  קישורים ישנים עם `#` מועברים אוטומטית לכתובת החדשה.
+- `scripts/build.mjs` רץ ב־Vercel בכל דיפלוי ומייצר ב־`dist/` עמוד HTML לכל כתובת (כותרת, תיאור, canonical, Open Graph, JSON-LD,
+  פירורי לחם ותוכן סטטי לסורקים), וגם `sitemap.xml` ו־`robots.txt`. הדומיין נלקח מ־`SITE_URL` או מהדומיין הראשי של הפרויקט ב־Vercel.
+- `vercel.json`: build, ניקוי כתובות, fallback לאפליקציה, והפניות 301 מהכתובות הישנות של Wix (`/post/...`, `/blog`, `/about-1`...).
+- בדיקה מקומית: `node scripts/build.mjs` ואז להגיש את `dist/`.
