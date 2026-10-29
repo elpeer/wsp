@@ -1136,3 +1136,18 @@ body.has-mini .appban,body.has-mini .toc-fab{display:none!important}
 .favwrap .unfav{top:auto;bottom:12px;left:12px}
 .alist .favwrap .unfav{top:50%;bottom:auto;left:12px;margin-top:-18px}
 .alist .favwrap .arow{padding-left:58px}
+
+/* ===== article cover: never crop the photo on desktop ===== */
+.ahero>img.ah-bg{object-position:center 28%}
+.ah-fig{display:none}
+@media (min-width:1024px){
+  #s-article .ahero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:48px;padding:96px var(--g) 56px;min-height:0;max-width:none!important}
+  #s-article .ahero>img.ah-bg{filter:blur(38px) saturate(1.25) brightness(.85);transform:scale(1.15);animation:none}
+  #s-article .ahero::before{background:linear-gradient(90deg,rgba(43,10,30,.55),rgba(43,10,30,.82) 55%,rgba(60,10,40,.9))}
+  #s-article .ahead{grid-column:1;grid-row:1;padding:0;max-width:640px;margin:0;justify-self:start}
+  .ah-fig{display:flex;grid-column:2;grid-row:1;margin:0;justify-content:center;align-items:center;min-height:0}
+  .ah-fig img{display:block;max-width:100%;max-height:min(62vh,600px);width:auto;height:auto;border-radius:28px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.12);animation:figIn .8s cubic-bezier(.2,.9,.2,1)}
+  @keyframes figIn{from{opacity:0;transform:translateY(20px) scale(.97)}}
+  #s-article .ahero .vtop{top:24px;inset-inline:var(--g)}
+}
+@media (min-width:1024px) and (prefers-reduced-motion:reduce){.ah-fig img{animation:none}}
