@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WSP — הקול של הספורטאיות</title>
+<meta name="theme-color" content="#FBEAF1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one phone-width app column, floating glass nav, horizontal snap carousels, hash-routed screens */
+:root{
+  --bg:#FBEAF1; --bg2:#F6DDE8; --surface:rgba(255,255,255,.72); --solid:#FFFFFF;
+  --ink:#2B1220; --ink2:#7A5A6A; --line:rgba(122,40,80,.12);
+  --pink:#E63A7E; --pink2:#FF7FAE; --blush:#FFC9DD; --lilac:#C9B5F5; --peach:#FFC3A8;
+  --nav:#24101B; --navfg:#FFE6F0;
+  --shadow:0 18px 40px -18px rgba(170,30,90,.35);
+  --display:"Karantina","Rubik",system-ui,sans-serif;
+  --body:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --r:26px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#170A11; --bg2:#22101A; --surface:rgba(44,20,33,.72); --solid:#2A1320;
+  --ink:#FFEAF2; --ink2:#C59BB0; --line:rgba(255,170,210,.12);
+  --pink:#FF4F92; --pink2:#FF8DB8; --blush:#5A2240; --lilac:#7E64C8; --peach:#8A4A3A;
+  --nav:#FFE3EE; --navfg:#2B1220; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#170A11; --bg2:#22101A; --surface:rgba(44,20,33,.72); --solid:#2A1320;
+  --ink:#FFEAF2; --ink2:#C59BB0; --line:rgba(255,170,210,.12);
+  --pink:#FF4F92; --pink2:#FF8DB8; --blush:#5A2240; --lilac:#7E64C8; --peach:#8A4A3A;
+  --nav:#FFE3EE; --navfg:#2B1220; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px}
+body{min-height:100vh;overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--pink);outline-offset:3px;border-radius:12px}
+
+/* ambient blobs */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ambient i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:drift 18s ease-in-out infinite alternate}
+.ambient i:nth-child(1){width:360px;height:360px;background:var(--blush);top:-120px;right:-80px}
+.ambient i:nth-child(2){width:300px;height:300px;background:var(--lilac);top:40%;left:-140px;animation-delay:-6s;opacity:.35}
+.ambient i:nth-child(3){width:260px;height:260px;background:var(--peach);bottom:-80px;right:20%;animation-delay:-11s;opacity:.35}
+@keyframes drift{to{transform:translate(30px,40px) scale(1.12)}}
+
+.app{position:relative;z-index:1;max-width:460px;margin:0 auto;min-height:100vh;padding-bottom:120px}
+.screen{display:none;animation:screenIn .45s cubic-bezier(.2,.8,.2,1)}
+.screen.on{display:block}
+@keyframes screenIn{from{opacity:0;transform:translateY(14px)}}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;padding:calc(env(safe-area-inset-top,0px) + 12px) 18px 10px;display:flex;align-items:center;gap:12px;
+  background:linear-gradient(var(--bg) 60%,transparent)}
+.logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.logo b{font-family:var(--display);font-size:34px;line-height:.8;letter-spacing:.5px;background:linear-gradient(120deg,var(--pink),#B04BD6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{display:block;font-size:11.5px;color:var(--ink2);line-height:1.2}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 0 0 1px var(--line);transition:transform .2s}
+.icon-btn:active{transform:scale(.9)}
+.icon-btn svg{width:20px;height:20px}
+.dot{position:relative}.dot::after{content:"";position:absolute;top:11px;left:12px;width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 2px var(--bg)}
+
+.greet{padding:4px 18px 0}
+.greet h1{font-family:var(--display);font-weight:700;font-size:46px;line-height:.9;margin:0;letter-spacing:.3px}
+.greet h1 em{font-style:normal;color:var(--pink)}
+.greet p{margin:6px 0 0;color:var(--ink2);font-size:13.5px}
+
+/* stories (programs) */
+.stories{display:flex;gap:14px;overflow-x:auto;padding:16px 18px 6px;scrollbar-width:none}
+.stories::-webkit-scrollbar,.rail::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
+.story{flex:none;width:70px;text-align:center;font-size:11.5px;font-weight:500;color:var(--ink)}
+.story .ring{width:70px;height:70px;border-radius:24px;padding:3px;background:conic-gradient(from 200deg,var(--pink),var(--peach),var(--lilac),var(--pink));transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.story:hover .ring{transform:rotate(-6deg) scale(1.05)}
+.story:active .ring{transform:scale(.92)}
+.story .ring>div{width:100%;height:100%;border-radius:21px;overflow:hidden;border:2.5px solid var(--bg);position:relative;background:var(--bg2)}
+.story span{display:block;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* section head */
+.sec{margin-top:26px}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;padding:0 18px;gap:12px}
+.sec-h h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px}
+.sec-h h2 span{color:var(--pink)}
+.sec-h p{margin:2px 0 0;font-size:12.5px;color:var(--ink2)}
+.see{font-size:12.5px;font-weight:600;color:var(--pink);white-space:nowrap;display:flex;align-items:center;gap:4px}
+.see svg{width:14px;height:14px}
+
+/* tabs */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 18px 4px;scrollbar-width:none}
+.tab{flex:none;padding:9px 15px;border-radius:999px;font-size:13px;font-weight:500;background:var(--surface);box-shadow:0 0 0 1px var(--line);transition:all .25s}
+.tab:hover{box-shadow:0 0 0 1px var(--pink)}
+.tab.on{background:var(--ink);color:var(--bg);box-shadow:none}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 18px 0;scrollbar-width:none}
+.chip{flex:none;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:500;color:var(--ink2);background:transparent;box-shadow:inset 0 0 0 1px var(--line);transition:all .2s}
+.chip.on{color:var(--pink);background:color-mix(in srgb,var(--pink) 12%,transparent);box-shadow:inset 0 0 0 1px var(--pink)}
+.chip i{font-style:normal;opacity:.6;margin-inline-start:3px}
+
+/* carousels */
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 18px 8px;scroll-padding-inline:18px;scrollbar-width:none}
+.rail>*{scroll-snap-align:start;flex:none}
+.rail.swap{animation:swapIn .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes swapIn{from{opacity:0;transform:translateX(-24px)}}
+
+/* thumbnails */
+.th{position:absolute;inset:0;overflow:hidden;background:linear-gradient(150deg,var(--c1),var(--c2))}
+.th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.th img.ok{opacity:1}
+.th img.r43{transform:scale(1.36)}
+.th .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:clamp(28px,22%,56px);color:rgba(255,255,255,.22);letter-spacing:2px}
+.shade{position:absolute;inset:0;background:linear-gradient(to top,color-mix(in srgb,var(--c2) 92%,#000) 0%,color-mix(in srgb,var(--c2) 55%,transparent) 32%,transparent 62%)}
+
+.card{position:relative;border-radius:var(--r);overflow:hidden;isolation:isolate;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;color:#fff;text-align:start}
+.card:hover{transform:translateY(-4px)}
+.card:hover .th img.ok{transform:scale(1.07)}
+.card:hover .th img.ok.r43{transform:scale(1.44)}
+.card:active{transform:scale(.97)}
+.card .meta{position:absolute;inset:auto 14px 14px 14px;z-index:2}
+.card .kick{font-size:10.5px;font-weight:600;letter-spacing:.6px;opacity:.9;display:flex;align-items:center;gap:6px}
+.card .kick::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
+.card h3{font-family:var(--display);font-weight:700;font-size:30px;line-height:.92;margin:4px 0 0;text-wrap:balance;text-shadow:0 2px 14px rgba(0,0,0,.25)}
+.card .sub{font-size:11.5px;opacity:.88;margin-top:4px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge{position:absolute;z-index:2;top:12px;right:12px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums}
+.badge.l{right:auto;left:12px}
+.badge svg{width:11px;height:11px}
+.play{position:absolute;z-index:2;top:50%;left:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;transform:scale(.6);transition:all .35s cubic-bezier(.3,1.5,.5,1)}
+.play svg{width:20px;height:20px;margin-left:-3px}
+.card:hover .play,.card:focus-visible .play{opacity:1;transform:scale(1)}
+
+.c-port{width:168px;height:236px}
+.c-port h3{font-size:27px}
+.c-wide{width:280px;height:178px}
+.c-reel{width:132px;height:224px;border-radius:22px}
+.c-reel h3{font-size:22px}
+.c-reel .play{opacity:1;transform:scale(.8);top:42%}
+
+/* hero: what's new */
+.hero{position:relative;margin:16px 18px 0;height:430px;border-radius:32px;overflow:hidden;box-shadow:var(--shadow);isolation:isolate}
+.hero .slide{position:absolute;inset:0;opacity:0;transition:opacity .7s;color:#fff}
+.hero .slide.on{opacity:1;z-index:1}
+.hero .slide.on .th img.ok{animation:kb 7s linear forwards}
+.hero .slide.on .th img.ok.r43{animation:kb43 7s linear forwards}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14)}}
+@keyframes kb43{from{transform:scale(1.36)}to{transform:scale(1.5)}}
+.bars{position:absolute;z-index:5;top:14px;inset-inline:16px;display:flex;gap:5px}
+.bars i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.35);overflow:hidden}
+.bars i b{display:block;height:100%;width:0;background:#fff}
+.bars i.done b{width:100%}
+.bars i.run b{animation:fill 6.5s linear forwards}
+@keyframes fill{to{width:100%}}
+.hero .tag{position:absolute;z-index:3;top:30px;right:16px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.hero .tag em{font-style:normal;padding:4px 9px;border-radius:999px;background:var(--pink);font-size:10.5px;letter-spacing:.5px}
+.hero .meta{position:absolute;z-index:3;inset:auto 18px 18px 18px}
+.hero h3{font-family:var(--display);font-weight:700;font-size:50px;line-height:.86;margin:6px 0 6px;text-wrap:balance}
+.hero .sub{font-size:13px;opacity:.92;line-height:1.35;max-width:32ch}
+.hero .cta{margin-top:14px;display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s}
+.btn:active{transform:scale(.95)}
+.btn svg{width:16px;height:16px}
+.btn-w{background:#fff;color:#2B1220}
+.btn-g{background:rgba(255,255,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;padding:0 16px}
+.tapzone{position:absolute;z-index:4;top:50px;bottom:150px;width:35%}
+.tapzone.prev{right:0}.tapzone.next{left:0}
+
+/* vote banner */
+.vote{margin:20px 18px 0;padding:16px 18px;border-radius:24px;display:flex;align-items:center;gap:14px;background:linear-gradient(115deg,var(--pink) 0%,#B54BD8 100%);color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.vote::after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.15);left:-50px;top:-60px}
+.vote .star{flex:none;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center}
+.vote .star svg{width:24px;height:24px;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vote b{display:block;font-family:var(--display);font-size:28px;line-height:.9}
+.vote span{font-size:12.5px;opacity:.9}
+.vote .go{margin-inline-start:auto;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--pink);display:grid;place-items:center;flex:none;transition:transform .3s}
+.vote:hover .go{transform:translateX(-4px)}
+.vote .go svg{width:18px;height:18px}
+
+/* editor's pick list */
+.picks{display:grid;gap:10px;padding:14px 18px 0}
+.pick{display:flex;gap:12px;align-items:center;padding:8px;border-radius:22px;background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 0 0 1px var(--line);transition:transform .25s,box-shadow .25s;text-align:start;width:100%}
+.pick:hover{box-shadow:0 0 0 1px var(--pink);transform:translateX(-3px)}
+.pick .pt{position:relative;flex:none;width:92px;height:72px;border-radius:16px;overflow:hidden}
+.pick .pt .mini{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
+.pick .pt .mini span{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);display:grid;place-items:center;color:var(--pink)}
+.pick .pt .mini svg{width:12px;height:12px}
+.pick .tx{min-width:0;flex:1}
+.pick .tx small{font-size:11px;color:var(--pink);font-weight:600}
+.pick .tx b{display:block;font-size:14.5px;line-height:1.25;margin-top:2px}
+.pick .tx span{font-size:12px;color:var(--ink2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick .du{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums;padding-inline-end:6px}
+
+/* platforms */
+.listen{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 18px 0}
+.listen a{padding:14px 6px;border-radius:20px;background:var(--surface);box-shadow:0 0 0 1px var(--line);text-align:center;font-size:11.5px;font-weight:500;transition:transform .2s,box-shadow .2s}
+.listen a:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--pink)}
+.listen svg{width:24px;height:24px;margin:0 auto 6px;display:block;color:var(--pink)}
+
+/* bottom nav */
+.nav{position:fixed;z-index:40;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:999px;background:color-mix(in srgb,var(--nav) 92%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 20px 40px -14px rgba(120,20,70,.55)}
+.nav button{width:54px;height:50px;border-radius:999px;display:grid;place-items:center;color:var(--navfg);opacity:.6;transition:all .35s cubic-bezier(.3,1.4,.5,1);position:relative}
+.nav button svg{width:21px;height:21px}
+.nav button.on{opacity:1;background:var(--pink);color:#fff;width:76px}
+.nav button:not(.on):hover{opacity:1}
+.nav button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* inner video page */
+.vhero{position:relative;height:min(118vw,520px);margin:0;overflow:hidden;color:#fff;isolation:isolate}
+.vhero .shade{background:linear-gradient(to top,var(--bg) 2%,color-mix(in srgb,var(--c2) 60%,transparent) 30%,transparent 60%),linear-gradient(to bottom,rgba(0,0,0,.35),transparent 25%)}
+.vtop{position:absolute;z-index:5;top:calc(env(safe-area-inset-top,0px) + 12px);inset-inline:16px;display:flex;justify-content:space-between}
+.vtop .icon-btn{background:rgba(255,255,255,.22);box-shadow:none;color:#fff}
+.vtop .grp{display:flex;gap:8px}
+.vplay{position:absolute;z-index:4;top:42%;left:50%;width:86px;height:86px;margin:-43px 0 0 -43px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.25);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff}
+.vplay::before{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:pulse 2s ease-out infinite}
+@keyframes pulse{to{inset:-28px;opacity:0}}
+.vplay svg{width:30px;height:30px;margin-left:-4px}
+.player{position:absolute;inset:0;z-index:6;background:#000;display:none}
+.player.on{display:block}
+.player iframe{width:100%;height:100%;border:0}
+.vbody{position:relative;z-index:3;margin-top:-120px;padding:0 18px}
+.vbody .kick{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--pink);color:#fff;font-size:12px;font-weight:600}
+.vbody h1{font-family:var(--display);font-weight:700;font-size:56px;line-height:.86;margin:12px 0 4px;text-wrap:balance}
+.vbody .role{font-size:15px;color:var(--ink2);line-height:1.4;margin:0}
+.facts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.facts div{padding:10px 14px;border-radius:18px;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:12px;color:var(--ink2)}
+.facts b{display:block;font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+.vactions{display:flex;gap:8px;margin-top:16px}
+.vactions .btn{flex:1;justify-content:center}
+.btn-p{background:var(--pink);color:#fff;box-shadow:0 12px 26px -10px var(--pink)}
+.btn-o{background:var(--surface);box-shadow:0 0 0 1px var(--line);flex:0 0 auto!important;width:46px;padding:0;justify-content:center}
+.btn-o.liked{color:var(--pink)}
+.btn-o.liked svg{fill:var(--pink);animation:pop .4s}
+@keyframes pop{50%{transform:scale(1.4)}}
+.about{margin-top:18px;padding:16px;border-radius:22px;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:14px;line-height:1.6;max-width:65ch}
+.about b{display:block;font-size:12px;color:var(--pink);margin-bottom:4px;letter-spacing:.3px}
+
+/* program page */
+.phead{position:relative;padding:calc(env(safe-area-inset-top,0px) + 70px) 18px 26px;color:#fff;background:linear-gradient(160deg,var(--c1),var(--c2));border-radius:0 0 36px 36px;overflow:hidden}
+.phead::after{content:attr(data-big);position:absolute;bottom:-34px;left:-10px;font-family:var(--display);font-size:150px;line-height:1;opacity:.13;white-space:nowrap;font-weight:700}
+.phead .vtop{position:absolute}
+.phead h1{font-family:var(--display);font-size:62px;line-height:.85;margin:0;font-weight:700}
+.phead p{margin:8px 0 0;font-size:14px;opacity:.92;max-width:34ch;line-height:1.4}
+.phead .stats{display:flex;gap:18px;margin-top:16px;font-size:12px;opacity:.95}
+.phead .stats b{display:block;font-size:22px;font-family:var(--display);line-height:1}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 18px 0}
+.grid .card{width:auto;height:250px}
+.grid .card.big{grid-column:1/-1;height:220px}
+.grid .card.big h3{font-size:38px}
+
+/* programs index */
+.plist{display:grid;gap:12px;padding:14px 18px 0}
+.prow{position:relative;height:150px;border-radius:28px;overflow:hidden;color:#fff;box-shadow:var(--shadow);display:block;text-align:start;width:100%;transition:transform .3s}
+.prow:hover{transform:scale(1.015)}
+.prow .collage{position:absolute;inset:0;display:flex}
+.prow .collage>div{flex:1;position:relative}
+.prow .ov{position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--c2) 85%,#000) 70%)}
+.prow .tx{position:absolute;z-index:2;top:0;bottom:0;right:18px;display:flex;flex-direction:column;justify-content:center;max-width:62%}
+.prow h3{font-family:var(--display);font-size:42px;line-height:.85;margin:0}
+.prow p{font-size:12px;margin:6px 0 0;opacity:.9;line-height:1.35}
+.prow .n{margin-top:8px;font-size:11px;font-weight:600;display:inline-flex;gap:4px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.22);width:fit-content}
+
+/* search */
+.sbox{margin:8px 18px 0;display:flex;align-items:center;gap:10px;height:54px;padding:0 18px;border-radius:999px;background:var(--surface);box-shadow:0 0 0 1px var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.sbox:focus-within{box-shadow:0 0 0 2px var(--pink)}
+.sbox svg{width:20px;height:20px;color:var(--ink2);flex:none}
+.sbox input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:15px;color:var(--ink);outline:none}
+.empty{padding:40px 18px;text-align:center;color:var(--ink2)}
+
+/* about */
+.aboutp{padding:0 18px}
+.aboutp .about{margin-top:12px}
+.social{display:flex;gap:10px;margin-top:14px}
+.social a{flex:1;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:12px;font-weight:600;transition:all .2s}
+.social a:hover{background:var(--pink);color:#fff}
+
+@media (min-width:520px){
+  .app{margin-top:24px;margin-bottom:24px;border-radius:44px;background:color-mix(in srgb,var(--bg) 70%,transparent);box-shadow:0 0 0 1px var(--line),0 40px 80px -30px rgba(160,30,90,.35);overflow:hidden;min-height:calc(100vh - 48px)}
+  .top{border-radius:44px 44px 0 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="app">
+  <!-- HOME -->
+  <section class="screen" id="s-home">
+    <header class="top">
+      <div class="logo"><div><b>WSP</b><small>הקול של הספורטאיות בישראל</small></div></div>
+      <button class="icon-btn" data-go="search" aria-label="חיפוש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icon-btn dot" aria-label="התראות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+    </header>
+    <div class="greet">
+      <h1>הבמה של <em>ספורט הנשים</em></h1>
+      <p>ראיונות, תכניות וסיקורים מעולם הספורטאיות בישראל</p>
+    </div>
+    <div class="stories" id="stories"></div>
+
+    <div class="hero" id="hero" aria-roledescription="carousel" aria-label="מה חדש"></div>
+
+    <a class="vote" href="https://www.wsp-womensportpower.com/%D7%9E%D7%A6%D7%98%D7%99%D7%99%D7%A0%D7%95%D7%AA-%D7%94%D7%A9%D7%A0%D7%94-2026" target="_blank" rel="noopener">
+      <div class="star"><svg viewBox="0 0 24 24" fill="#fff"><path d="m12 2 2.9 6.6 7.1.6-5.4 4.7 1.6 7.1L12 17.3 5.8 21l1.6-7.1L2 9.2l7.1-.6z"/></svg></div>
+      <div><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. מי הספורטאית שלך?</span></div>
+      <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></div>
+    </a>
+
+    <div class="sec">
+      <div class="sec-h"><div><h2>הפודקאסט <span>הרשמי</span></h2><p>עם נועה זליבנסקי, שחקנית ליגת העל</p></div><button class="see" data-go="p-pod">הכל <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      <div class="tabs" id="podTabs" role="tablist"></div>
+      <div class="rail" id="podRail"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-h"><div><h2>התכניות <span>שלנו</span></h2><p>בחרי תכנית, ואז ענף</p></div><button class="see" data-go="programs">כל התכניות <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      <div class="tabs" id="progTabs" role="tablist"></div>
+      <div class="chips" id="progChips"></div>
+      <div class="rail" id="progRail"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-h"><div><h2>בחירת <span>המערכת</span></h2><p>פרקים שכדאי להתחיל מהם</p></div></div>
+      <div class="picks" id="picks"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-h"><div><h2>קצרים <span>ומהשטח</span></h2><p>משאלי רחוב, טיפים מקצועיים וכתבות</p></div><button class="see" data-go="p-vid">הכל <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      <div class="chips" id="shortChips"></div>
+      <div class="rail" id="shortRail"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-h"><div><h2>להאזנה <span>בדרך</span></h2><p>הפודקאסט זמין בכל הפלטפורמות</p></div></div>
+      <div class="listen">
+        <a href="https://open.spotify.com/show/2hUH8WVwazaArL4d8c5iWQ" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".15"/><path d="M7 9.5c3.5-1 7.5-.6 10.5 1M7.5 12.6c3-.8 6.2-.4 8.7 1M8 15.5c2.4-.6 4.8-.3 6.8.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Spotify</a>
+        <a href="https://podcasts.apple.com/il/podcast/id1697274654" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="10" r="3"/><path d="M12 14v7M7.5 15.5a7 7 0 1 1 9 0"/></svg>Apple</a>
+        <a href="https://www.youtube.com/channel/UC6duCxv3pdUP6j7Ch6MZTAQ" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="14" rx="4" opacity=".18"/><path d="M10 9v6l5-3z"/></svg>YouTube</a>
+        <a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS INDEX -->
+  <section class="screen" id="s-programs">
+    <header class="top"><div class="logo"><div><b>תכניות</b><small>שש תכניות על ספורט נשים והעצמה</small></div></div></header>
+    <div class="plist" id="plist"></div>
+  </section>
+
+  <!-- PROGRAM PAGE -->
+  <section class="screen" id="s-program"></section>
+
+  <!-- VIDEO PAGE -->
+  <section class="screen" id="s-video"></section>
+
+  <!-- SEARCH -->
+  <section class="screen" id="s-search">
+    <header class="top"><div class="logo"><div><b>חיפוש</b><small>ספורטאית, ענף, אורח או נושא</small></div></div></header>
+    <label class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="למשל: כדוריד, אולימפית, שרון קנטור" autocomplete="off"></label>
+    <div class="chips" id="sugg"></div>
+    <div class="grid" id="sres"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="screen" id="s-about">
+    <header class="top"><div class="logo"><div><b>על המיזם</b><small>WSP · Women Sport Power</small></div></div></header>
+    <div class="aboutp">
+      <div class="about"><b>מי אנחנו</b>WSP היא פלטפורמה לקידום ספורט הנשים בישראל. אנחנו נותנות במה לספורטאיות, יוצרות חשיפה ומקדמות את הענפים דרך תוכן, שידורים, ראיונות, פודקאסטים ואירועים.</div>
+      <div class="about"><b>מה תמצאו כאן</b>הפודקאסט הרשמי, שש תכניות קבועות, סיקורי ענפי הכדור, משאלי רחוב, פינות מקצועיות וכתבות שטח.</div>
+      <div class="social">
+        <a href="https://www.facebook.com/WSPpodcast" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@womenssportpower" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<nav class="nav" aria-label="ניווט ראשי">
+  <button data-go="home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>בית</span></button>
+  <button data-go="programs" data-tab="programs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7.5" height="7.5" rx="2.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2.5"/></svg><span>תכניות</span></button>
+  <button data-go="p-pod" data-tab="p-pod"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span>פודקאסט</span></button>
+  <button data-go="search" data-tab="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>חיפוש</span></button>
+  <button data-go="about" data-tab="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>על המיזם</span></button>
+</nav>
+
+<script>
+/* ===== DATA (from wsp-womensportpower.com, YouTube IDs) =====
+   item: [youtubeId, episode, name, role, duration, sub]                       */
+const P = {
+ pod:{name:"הפודקאסט הרשמי",short:"הפודקאסט",big:"PODCAST",c1:"#FF5E9B",c2:"#9B1F5E",
+  desc:"מאחורי הקלעים ומעמקי הלב של ספורט הנשים בישראל, עם נועה זליבנסקי.",
+  subs:{para:"פראלימפי",fight:"ענפי לחימה",ball:"ענפי כדור",xtr:"אקסטרים ושטח",exp:"מומחים ושיח"},
+  items:[
+  ["I-wK8blhLkY",54,"גל חמרני","קפטנית נבחרת הכדורשער ומדליקת המשואה","54:10","para"],
+  ["9BnaPvH9fKU",53,"רותם אשכנזי","טניסאית חירשים אולימפית, מקום רביעי בעולם","50:43","para"],
+  ["UhVwX2n1ezM",52,"אלונה בן נתן","רוכבת מרוצי ראלי, בדרך לאליפות העולם","1:04:59","xtr"],
+  ["orCsOv1KuCw",51,"ענת לילאור","גולשת הגלים האולימפית","56:51","xtr"],
+  ["tz-B5lXJFuw",50,"מעיין זיקרי","טניסאית כסאות גלגלים, ספיישל יום האישה","53:18","para"],
+  ["7YqQwUO5fDY",49,"יובל הולצמן","רב סרן, מפקדת פלוגה ושחקנית כדורסל","57:52","ball"],
+  ["qPpou69d7dM",48,"פולינה גרוסמן","אלופת העולם בקיקבוקס","1:06:55","fight"],
+  ["KTlmQIYAwoQ",47,"מנאסק אלמראענה","מנהלת מחלקת הספורט היחידה במגזר הערבי","46:36","exp"],
+  ["e2Sex1r15AM",46,"אילי ומרג'ורי","אלופות ישראל בפוצ'יוולי ומייסדות פוצ'ילינה","55:46","xtr"],
+  ["JWlvgMZqSAU",45,"דניאל וולפסון","הישראלית הראשונה שהגיעה לפסגת האוורסט","1:13:14","xtr"],
+  ["TKuNwbGBpfU",44,"רוני אוחיון","מדליסטית פראלימפית בנבחרת הכדורשער","1:14:37","para"],
+  ["KBO13IMaW9M",43,"אלכס סנדיפורד","ספורט ככלי לריפוי טראומה","1:10:02","exp"],
+  ["1K4vu1-AdRY",42,"דר הכט","אלופת אירופה בסייף עד גיל 23","56:15","fight"],
+  ["eDUvB_lE7IE",41,"ד\"ר יעל פודקמיין","שיווק ופרסום ספורט נשים","55:07","exp"],
+  ["PwuMQypbrPg",40,"אלינור דוידוב","אלופת ישראל בטניס שולחן","44:48","ball"],
+  ["_j2Nn6Lo6jk",39,"ג'ורדי ויינברג","קפטנית נבחרת ישראל בפלאג פוטבול","44:35","ball"],
+  ["IpnWfLD4iTU",38,"ד\"ר דליה נבות-מינצר","שינה לספורטאיות, רופאת מכון וינגייט","1:00:07","exp"],
+  ["zZz7G5wHHc0",37,"אושר כהן","שחקנית כדוריד בנבחרת ישראל","46:45","ball"],
+  ["CKSIILtj67I",36,"יוליה צ'רנוי","אלופת העולם בקליעה פראלימפית","1:12:01","para"],
+  ["SfSH2saoqOY",35,"אירה ויגדורצ'יק","מאמנת אולימפית בהתעמלות אומנותית","1:09:32","exp"],
+  ["jJD4Viuna9I",34,"רחל שטיינשניידר","כדורגלנית השנה, הפועל קטמון ירושלים","29:15","ball"],
+  ["ZwfugK9cl_k",33,"שני הרשקו","מאמן נבחרת הג'ודו לנשים, לקראת פריז","50:55","fight"],
+  ["O3qIY1Fp0H0",32,"ח\"כ סימון דוידסון","ספורט נשים בכנסת","46:22","exp"],
+  ["-CdD2FaH2Wo",31,"ניצן דונאי","ריאיון הפרישה של כוכבת הכדוריד","43:23","ball"],
+  ["XXLTAKI7G18",30,"נילי בלוק","אלופת העולם באגרוף תאילנדי","42:52","fight"],
+  ["dphqytEszxs",29,"פנינה אהרונוב","לוחמת ג'ו ג'יטסו, סגנית אלופת העולם","49:16","fight"],
+  ["1sPP-JnDAac",28,"איתי קאשי","סיקור ספורט נשים בתקשורת","57:38","exp"],
+  ["hXbf_VPIltM",27,"ד\"ר שלומית גיא","חקר ספורט הנשים בישראל","51:58","exp"],
+  ["QsA_r2l7xQo",26,"שחר טלבי ושחר אגם","החלקה אומנותית על גלגיליות","47:58","xtr"],
+  ["1Q3W_2ItgyU",25,"ד\"ר יהודית נוסגורוצקי","כדורגלנית ורופאה בסורוקה","42:59","ball"]]},
+ hm:{name:"התקפה מתפרצת",short:"התקפה מתפרצת",big:"FAST BREAK",c1:"#FF7A9C",c2:"#B4235A",
+  desc:"תכנית בקצב גבוה על העניינים הכי חמים בספורט הישראלי, עם נועה זליבנסקי-יחזקאל ואהד ווקס.",
+  items:[
+  ["5HFdgbtaxAI",38,"מייקל גילת","מהכדורסל המקצועני למסע של שינוי זהות","44:14"],
+  ["IQLJ5lvKPXE",37,"ד\"ר טל אלוני רוזן","שיווק ומיתוג ספורט הנשים","1:13:40"],
+  ["EThhrvvsseA",36,"אורית רז","מנהלת ענף כדורגל הנשים בישראל","1:07:12"],
+  ["jW8lLZIrKtw",35,"דניאל שמעוני","מייסדת קהילת אקסטרים גירלז","45:57"],
+  ["LiAO9Gy7NMQ",34,"מאור טיורי","הרצה האולימפית למרחקים ארוכים","1:05:12"],
+  ["qHMXOiXm28k",33,"ניקול רובנוביץ'","סגנית אלופת אירופה בהרמת משקולות","57:56"],
+  ["g47MA8mOBJs",32,"טל נתן","ההישג ההיסטורי עם נבחרת ישראל הצעירה","1:00:49"],
+  ["T6jdGDyj1zc",31,"בן גולדפריינד","כתב הספורט של N12","55:05"],
+  ["iy1_VBrWwJE",30,"קטיה אברמזון","מלכת הריבאונדים, היום בכרמיאל","52:00"],
+  ["5p3c-8tDIwU",29,"רחלי גלאם ומיטל גבאי","שופטות ליגת העל בכדורגל נשים","54:37"],
+  ["o_-hVzgkDDc",28,"נורית שרביט","מנהלת ספורט הנשים במשרד התרבות והספורט","1:11:55"],
+  ["Y4JYm68fNKE",27,"גלית מוסאי","מנהלת כדורסל נשים ברמת השרון","1:16:57"],
+  ["8OYLyvf2mD4",26,"תומר ירון ושני פרידמן","הפועל באר שבע דימונה עולה לליגת העל","47:43"],
+  ["cYHT0mX86_U",25,"עידן מימון","גדול הכדורידנים מכל הזמנים","55:45"],
+  ["z7vi-UrhPr4",24,"יוליה גלושקו","אגדת הטניס הישראלי","54:34"],
+  ["VfzpqCYWsrg",23,"מור שאול","אלופת המדינה בכדוריד נשים","52:17"],
+  ["k7VR3kTLiM0",22,"שיר וקרט","קפטנית נבחרת ישראל בכדוריד","1:02:35"],
+  ["6RiEQQT238A",21,"לימור מזרחי","אגדת הכדורסל, ספיישל עצמאות","1:06:36"],
+  ["MnTR_vGA2aA",20,"ד\"ר עלינא ברנשטיין","האמת על תקשורת הספורט","1:16:10"],
+  ["EPYpm-YdnjU",19,"עופרי יקיר","מנכ\"לית פרויקט אתנה","56:55"],
+  ["YXm7r8HwLNA",18,"לירון כהן","שיאנית נבחרת ישראל בכדורסל","1:20:09"],
+  ["KubLzBoffYM",17,"שי גרינברג","מייסד קהילת הכדורסל","56:48"],
+  ["Z_FwBmCNZ7I",16,"מיכל אפשטיין","זוכת מאסטר שף וכדורסלנית עבר","53:26"],
+  ["V6J-gcvckiU",15,"ליעד סואץ קרני","כדורסלנית עבר ופעילה למען זכויות נשים","56:14"],
+  ["vTAeTBgiq5g",14,"ונסה פרץ וסמדר דנון","כדורשת, הענף העממי הגדול בישראל","45:43"],
+  ["_CVz6ahnr3g",13,"מגי וג'וי","כוכבות הכדורסל והטיקטוק, הלוליז","59:24"],
+  ["zYGyyTrjKEY",12,"עומר שריר","סטרס, חרדות וצמיחה","51:30"],
+  ["s0wL7LkvIYw",11,"שרון קנטור","אלופת העולם ומדליסטית אולימפית בגלישת רוח","53:30"],
+  ["O_noNpYolEg",10,"תומר מרגלית ואוראל כלאף","אלופי אירופה בריקוד כסאות גלגלים","47:45"]]},
+ mm:{name:"מגרש מסכם",short:"מגרש מסכם",big:"COURT",c1:"#E58BFF",c2:"#7A2A9E",
+  desc:"סיקורי ספורט הנשים בארבעת ענפי הכדור המובילים, עם מנחה קבועה לכל ענף.",
+  subs:{bb:"כדורסל",hb:"כדוריד",vb:"כדורעף",fb:"כדורגל"},
+  items:[
+  ["POlooD7GplM",24,"דניאל ברנובסקי","שוערת העבר וקפטנית נבחרת ישראל","47:35","hb"],
+  ["b6x6EQ4lAkM",23,"אלעד שפגט ואופיר דבי","הפועל כפר סבא מהליגה הלאומית","34:29","vb"],
+  ["zp6e5qhUfZo",23,"נוי בונבידה","קפטנית הפועל אשדוד","38:22","hb"],
+  ["90Pi7zTmawM",22,"ליזה סיריך ואנה אוליביירה","מכבי SVA רחובות וכוכבות הטיקטוק","47:11","vb"],
+  ["A1TB6--qziA",22,"נועם בן זקן ואלה חנגל","א.ס רמת השרון","36:19","hb"],
+  ["LeH2kylhbKc",21,"ניקול פדלון","קפטנית מכבי פתח תקווה","37:48","hb"],
+  ["X6C6QzWGsdA",20,"ליעד סואץ קרני","פותחים עונה עם המנחה החדשה נופר שלום","52:37","bb"],
+  ["avdpaTsucwg",20,"ליעד הר לב","יו\"ר ועדת נשים באיגוד הכדוריד","38:40","hb"],
+  ["uYGlkCoeA4M",19,"אסף שלם ואדר פאר","בכירי שיפוט הכדורסל","47:29","bb"],
+  ["ma-r1kiJMTk",19,"מיכל שריד","מעמדת השחקנית לעמדת המאמנת","38:47","hb"],
+  ["xReWluNVY9s",19,"דייגו ועדן פוסטרנק","אב ובנו, מ.ס רמת אביב","50:57","vb"],
+  ["abUORsE6OXU",18,"דנה סנדר","יו\"ר מנהלת ליגת העל, לקראת העונה","59:35","bb"],
+  ["Xp8IEhptVhs",18,"עידן מזרחי","יו\"ר איגוד הכדוריד הנכנס","42:01","hb"],
+  ["nTSgW6vEnzA",18,"עופרה וחן אברמוביץ","משפחת הכדורעף","45:38","vb"],
+  ["nISuOgIUDgE",17,"גאיה בן זיקרי","שוערת נבחרת ישראל והליגיונרית","37:18","hb"],
+  ["rI_ISCp2nNE",17,"אפרת ויגלמן ועדי טרבס","הכדורעף מעיניהן של עורכות דין","38:28","vb"],
+  ["ntZ23j9PD7c",16,"מאי רווח","אלופת המדינה בכדורסל נשים","1:03:25","bb"],
+  ["-jNSiHFJCWU",16,"שון חן לויתן ועומרי בן פורת","ספיישל כדורעף חופים","1:02:39","vb"],
+  ["q06-1HPg6jY",16,"קרן טפליצקי ושיר גבזה","אלופות המדינה בכדוריד","34:20","hb"],
+  ["ZuS_CcIbf0g",15,"מויה טאצ'י","מאמן אליצור רמלה","1:19:15","bb"],
+  ["MtX5t0C57to",15,"עדן מוסקוביץ' ואוהד רדקו","פרייבול, בית הספר לכדורעף חופים","37:47","vb"],
+  ["xnmgH0kUgLU",14,"נור כיוף","השחקנית הדרוזית הראשונה בליגת העל","44:04","bb"],
+  ["cxM0IB6S0WA",14,"גלעד מאור","מאמן נבחרת ישראל בכדוריד","43:20","hb"],
+  ["LZVbZSWXKdY",14,"רינה דור וגלית דבש","יו\"ר איגוד הכדורעף ומחזיקת הגביע","51:24","vb"],
+  ["YZ8iVGlP7YM",13,"טל לב","שחקנית אליצור רמלה","56:21","bb"],
+  ["sdJarwI89C8",13,"ניצן כהן","שחקנית העבר שעברה להייטק","30:36","hb"],
+  ["Rs_SytZV_P8",13,"סבה דבש וליאור לוק","מאמני גמר הגביע","1:00:55","vb"],
+  ["gOF1zpBdUps",13,"יוגב צמח ושלמה הלינגר","מועדון הכדורגל רמת השרון","49:28","fb"],
+  ["6AcriCHZnMM",12,"ליזה, סופי ונסטיה","שלוש שחקניות, שלושה מסלולים","48:11","vb"],
+  ["amg6Sn2LLnQ",12,"רבקה רוס","מייסדת הפועל לב ירושלים","1:03:45","bb"]]},
+ pb:{name:"פצצה ביציע",short:"פצצה ביציע",big:"STANDS",c1:"#FF9A7A",c2:"#C2346B",
+  desc:"פודקאסט האוהדות עם הודיה צאמל ואליה עתאלי. הסיפורים הכי מפוצצים מהיציעים ומחוצה להם.",
+  items:[
+  ["UlK3p3RSxwo",7,"ברק עמנואל","מאמן כדורגל בעמותת שער שוויון","40:00"],
+  ["Z7PLFQKyKf8",6,"שחקניות הפוצ'יוולי","חוגגות את יום האישה מהחוף","42:45"],
+  ["2PQQWJobXwY",5,"האוהדים השרופים","החבר'ה הטובים של אליה","42:12"],
+  ["PdZGoM4I8xw",4,"ברזיל ופוצ'יוולי","הצדדים היפים של הכדורגל","40:59"],
+  ["4G6sGZ2fvw0",3,"המדריך לאוהדת המתחילה","וגם פרשת אצילי","40:55"],
+  ["iXBC10Q_zU4",2,"אורי ביטון","השחקן ואוהד מכבי ת\"א","44:21"],
+  ["vxvxrpXvrlc",1,"פרק הבכורה","הכירו את הודיה ואליה","47:27"]]},
+ ss:{name:"שיחה ספורטיבית",short:"שיחה ספורטיבית",big:"TALK",c1:"#F59AC4",c2:"#8C3A78",
+  desc:"התכנית המקצועית: תזונה, אימון, פציעות ובריאות לספורטאיות, עם אנשי ונשות מקצוע.",
+  items:[
+  ["pWB9jUexb_w",0,"עמית שובלי","יסמין מארחת את מאמן הכושר שלה","43:22"],
+  ["FSfmlPfCPxo",0,"הדר קישון","תזונת ספורט לספורטאיות","1:01:01"],
+  ["-hLozcFpMGE",0,"פולינה גרוסמן ויניב רונאל","ההצלחה בגביע העולם","47:27"],
+  ["jXoRq-P2JWM",0,"שיר חיים","רצפת האגן לספורטאיות","53:53"],
+  ["WjAvrc1Z7kQ",0,"אימוני כוח לנשים","פיזיותרפיסטית, מאמנת כושר ופיזיולוג","1:06:19"],
+  ["X-kXTA423M8",0,"טליה יעקב","תזונה נכונה ועולם הזומבה","46:02"],
+  ["azMmx5cM-C4",0,"סיכום אולימפי","פריז 2024 עם כתבי דבר ספורט","52:44"],
+  ["ORHB_6JngXk",0,"אנשי המדיה","יפעת ירושלמי ועדי כפיר","44:43"],
+  ["fi0Y5yM8OJw",0,"שיטות אימון","אירה ויגדורצ'יק וקארין וקסמן","38:37"],
+  ["KunpMBZUndg",0,"ספיישל יום האישה","אור הורוד מארח את נועה זליבנסקי","41:59"],
+  ["tz385wGP81c",0,"פציעות בספורט נשים","מעיין זוליכאן ואסף בן ארי","45:01"],
+  ["FO8qyd1fG_4",0,"סלון ספורטיבית","ספיישל יום העצמאות ה-75","32:01"]]},
+ vid:{name:"קצרים ומהשטח",short:"מהשטח",big:"FIELD",c1:"#C7A6FF",c2:"#6A3FB0",
+  desc:"כתבות שטח, משאלי רחוב, יום בחיי ספורטאית ופינות מקצועיות קצרות.",
+  subs:{tip:"מבינות ספורט",street:"משאלי רחוב",doc:"כתבות",day:"המגרשלי"},
+  items:[
+  ["WClPDfB50DI",0,"מניפה לשמיים","טניה פאוטוב, אלופת העולם בקטלבל","13:28","doc"],
+  ["i1DAOWxULzI",0,"לוחמות על הקרח","נבחרת ישראל בהוקי נשים","12:06","doc"],
+  ["W33jR3wgvI8",0,"מה רחובות חושבת?","משאל הרחוב של WSP","07:41","street"],
+  ["c3p9RH-A6F4",0,"מה אשקלונים חושבים?","משאל הרחוב של WSP","07:25","street"],
+  ["EGkS82NBXRo",0,"חימום ומתיחות","מעיין זוליכאן, פיזיותרפיסטית","04:40","tip"],
+  ["h4-Db8V_8_g",0,"מה לאכול לפני אימון","לינוי מור, תזונאית ספורט","04:44","tip"],
+  ["0aS2V5R3_X4",0,"כמה חלבון צריך","לינוי מור, דיאטנית ספורט","04:09","tip"],
+  ["jjQC07a3AFk",0,"התאוששות מאימון","מעיין זוליכאן, פיזיותרפיסטית","02:03","tip"],
+  ["UlNcBoi-vA8",0,"עור הפנים באימונים","נופר שלום, קוסמטיקאית","04:28","tip"],
+  ["FWhFjU1IiAg",0,"ירדן דנן","יום בחיי שחקנית כדורסל","07:44","day"],
+  ["e8UZiBZ2BDs",0,"עמית איזק","יום בחיי שחקנית כדוריד","09:25","day"],
+  ["iu2MKpW9LJw",0,"יום האישה שמח","מה הספורט נתן לספורטאיות","04:15","doc"]]}
+};
+const ORDER=["pod","hm","mm","pb","ss","vid"];
+const ALL=[];ORDER.forEach(k=>P[k].items.forEach(a=>ALL.push({id:a[0],ep:a[1],name:a[2],role:a[3],dur:a[4],sub:a[5]||"",p:k})));
+const byId=Object.fromEntries(ALL.map(v=>[v.id,v]));
+
+/* ===== THUMBNAILS: frames from inside the video, never the intro frame =====
+   YouTube stores 3 auto-frames per video (1=25%, 2=50%, 3=75%). We try HD → SD → HQ,
+   and treat YouTube's 120×90 grey placeholder as "missing".                         */
+const FRAME=2;
+function thumbHTML(v,frame=FRAME){
+  const p=P[v.p];
+  return `<div class="th" style="--c1:${p.c1};--c2:${p.c2}"><span class="ph">${p.big.split(" ")[0]}</span><img class="yt" alt="" referrerpolicy="no-referrer" loading="lazy" data-yt="${v.id}" data-f="${frame}"></div>`;
+}
+function hydrate(root=document){
+  root.querySelectorAll("img.yt:not([data-s])").forEach(img=>{
+    const id=img.dataset.yt,f=img.dataset.f;
+    const list=[`maxres${f}`,`sd${f}`,`hq${f}`,`mq${f}`,`hqdefault`]; // last = channel thumbnail, only if no inner frame exists
+    let i=0;
+    const next=()=>{ if(i>=list.length){img.remove();return} img.src=`https://i.ytimg.com/vi/${id}/${list[i++]}.jpg`; };
+    img.onload=()=>{
+      if(img.naturalWidth<=120){next();return}
+      if(img.naturalWidth/img.naturalHeight<1.5) img.classList.add("r43"); // letterboxed 4:3 → crop bars
+      img.classList.add("ok");
+    };
+    img.onerror=next; img.dataset.s=1; next();
+  });
+}
+
+const ICON={
+ play:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.3 3.7 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.5 0 5.8 3.3 4.5 6.8C19.5 15.4 12 20 12 20z"/></svg>',
+ yt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>'
+};
+const epLabel=v=>v.ep?`פרק ${v.ep}`:P[v.p].subs&&v.sub?P[v.p].subs[v.sub]:P[v.p].short;
+
+function card(v,cls="c-port"){
+  const p=P[v.p];
+  return `<a class="card ${cls}" href="#v-${v.id}" data-vt="${v.id}" style="--c1:${p.c1};--c2:${p.c2}">
+    ${thumbHTML(v)}<div class="shade"></div>
+    <span class="badge">${ICON.clock}${v.dur}</span>
+    ${v.ep&&cls!=="c-reel"?`<span class="badge l">#${v.ep}</span>`:""}
+    <span class="play">${ICON.play}</span>
+    <div class="meta"><div class="kick">${cls==="c-reel"?(p.subs&&v.sub?p.subs[v.sub]:p.short):p.short}</div><h3>${v.name}</h3>${cls!=="c-reel"?`<div class="sub">${v.role}</div>`:""}</div>
+  </a>`;
+}
+
+/* ===== HOME ===== */
+function renderStories(){
+  document.getElementById("stories").innerHTML=ORDER.map(k=>{
+    const o=byId[P[k].items[0][0]];
+    return `<a class="story" href="#p-${k}"><div class="ring"><div>${thumbHTML(o)}</div></div><span>${P[k].short}</span></a>`;
+  }).join("");
+}
+
+const HERO=[byId["I-wK8blhLkY"],byId["5HFdgbtaxAI"],byId["POlooD7GplM"],byId["UlK3p3RSxwo"],byId["pWB9jUexb_w"]];
+let hi=0,htimer;
+function renderHero(){
+  const h=document.getElementById("hero");
+  h.innerHTML=`<div class="bars">${HERO.map(()=>"<i><b></b></i>").join("")}</div>`+
+   HERO.map((v,i)=>{const p=P[v.p];return `<div class="slide" style="--c1:${p.c1};--c2:${p.c2}" aria-hidden="true">
+     ${thumbHTML(v)}<div class="shade"></div>
+     <div class="tag"><em>חדש</em>${p.name}</div>
+     <div class="meta"><div class="sub" style="font-weight:600;opacity:1">${epLabel(v)} · ${v.dur}</div><h3>${v.name}</h3><div class="sub">${v.role}</div>
+     <div class="cta"><a class="btn btn-w" href="#v-${v.id}" data-vt="${v.id}">${ICON.play.replace('#fff','currentColor')}לצפייה</a><a class="btn btn-g" href="#p-${v.p}">לכל הפרקים</a></div></div></div>`}).join("")+
+   `<button class="tapzone prev" aria-label="הקודם"></button><button class="tapzone next" aria-label="הבא"></button>`;
+  h.querySelector(".prev").onclick=()=>heroGo(hi-1);
+  h.querySelector(".next").onclick=()=>heroGo(hi+1);
+  let sx=0;h.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+  h.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)heroGo(hi+(dx>0?1:-1))});
+  heroGo(0);
+}
+function heroGo(n){
+  const h=document.getElementById("hero");hi=(n+HERO.length)%HERO.length;
+  h.querySelectorAll(".slide").forEach((s,i)=>{s.classList.toggle("on",i===hi);s.setAttribute("aria-hidden",i!==hi)});
+  h.querySelectorAll(".bars i").forEach((b,i)=>{b.className=i<hi?"done":"";if(i===hi){void b.offsetWidth;b.className="run"}});
+  clearTimeout(htimer);htimer=setTimeout(()=>heroGo(hi+1),6500);
+}
+
+function tabs(el,list,active,onPick){
+  el.innerHTML=list.map(([k,l])=>`<button class="tab${k===active?" on":""}" role="tab" aria-selected="${k===active}" data-k="${k}">${l}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest(".tab");if(!b)return;el.querySelectorAll(".tab").forEach(t=>{t.classList.toggle("on",t===b);t.setAttribute("aria-selected",t===b)});onPick(b.dataset.k);b.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})};
+}
+function chips(el,list,active,onPick){
+  el.innerHTML=list.map(([k,l,n])=>`<button class="chip${k===active?" on":""}" data-k="${k}">${l}${n!=null?`<i>${n}</i>`:""}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;el.querySelectorAll(".chip").forEach(t=>t.classList.toggle("on",t===b));onPick(b.dataset.k)};
+}
+function fillRail(el,items,cls){el.innerHTML=items.map(v=>card(v,cls)).join("");el.classList.remove("swap");void el.offsetWidth;el.classList.add("swap");el.scrollLeft=0;hydrate(el)}
+const itemsOf=k=>ALL.filter(v=>v.p===k);
+
+function renderPod(){
+  const subs=P.pod.subs;
+  tabs(document.getElementById("podTabs"),[["all","הכל"],...Object.entries(subs)],"all",k=>fillRail(document.getElementById("podRail"),itemsOf("pod").filter(v=>k==="all"||v.sub===k).slice(0,12),"c-port"));
+  fillRail(document.getElementById("podRail"),itemsOf("pod").slice(0,12),"c-port");
+}
+function renderProg(){
+  const progs=["hm","mm","pb","ss"];
+  const chipsEl=document.getElementById("progChips"),rail=document.getElementById("progRail");
+  const show=k=>{
+    const p=P[k];
+    if(p.subs){
+      const counts=Object.fromEntries(Object.keys(p.subs).map(s=>[s,itemsOf(k).filter(v=>v.sub===s).length]));
+      chipsEl.hidden=false;
+      chips(chipsEl,[["all","כל הענפים",itemsOf(k).length],...Object.entries(p.subs).filter(([s])=>counts[s]).map(([s,l])=>[s,l,counts[s]])],"all",s=>fillRail(rail,itemsOf(k).filter(v=>s==="all"||v.sub===s).slice(0,12),"c-wide"));
+    } else chipsEl.hidden=true;
+    fillRail(rail,itemsOf(k).slice(0,12),"c-wide");
+  };
+  tabs(document.getElementById("progTabs"),progs.map(k=>[k,P[k].name]),"hm",show);
+  show("hm");
+}
+function renderShorts(){
+  const subs=P.vid.subs,rail=document.getElementById("shortRail");
+  chips(document.getElementById("shortChips"),[["all","הכל"],...Object.entries(subs)],"all",k=>fillRail(rail,itemsOf("vid").filter(v=>k==="all"||v.sub===k),"c-reel"));
+  fillRail(rail,itemsOf("vid"),"c-reel");
+}
+function pickRow(v){const p=P[v.p];return `<a class="pick" href="#v-${v.id}" style="--c1:${p.c1};--c2:${p.c2}">
+  <div class="pt">${thumbHTML(v)}<div class="mini"><span>${ICON.play.replace('#fff','currentColor')}</span></div></div>
+  <div class="tx"><small>${p.short} · ${epLabel(v)}</small><b>${v.name}</b><span>${v.role}</span></div><div class="du">${v.dur}</div></a>`}
+function renderPicks(){
+  const ids=["JWlvgMZqSAU","s0wL7LkvIYw","90Pi7zTmawM","YXm7r8HwLNA","CKSIILtj67I"];
+  const el=document.getElementById("picks");el.innerHTML=ids.map(i=>pickRow(byId[i])).join("");hydrate(el);
+}
+
+/* ===== PROGRAMS INDEX ===== */
+function renderPlist(){
+  const el=document.getElementById("plist");
+  el.innerHTML=ORDER.map(k=>{const p=P[k],its=itemsOf(k);return `<a class="prow" href="#p-${k}" style="--c1:${p.c1};--c2:${p.c2}">
+    <div class="collage">${its.slice(0,3).map(v=>`<div>${thumbHTML(v)}</div>`).join("")}</div><div class="ov"></div>
+    <div class="tx"><h3>${p.name}</h3><p>${p.desc}</p><span class="n">${its.length} ${k==="vid"?"סרטונים":"פרקים"}</span></div></a>`}).join("");
+  hydrate(el);
+}
+
+/* ===== PROGRAM PAGE ===== */
+function renderProgram(k){
+  const p=P[k],its=itemsOf(k),el=document.getElementById("s-program");
+  const total=its.reduce((s,v)=>{const t=v.dur.split(":").map(Number);return s+(t.length===3?t[0]*60+t[1]:t[0])},0);
+  el.innerHTML=`<div class="phead" data-big="${p.big}" style="--c1:${p.c1};--c2:${p.c2}">
+     <div class="vtop"><a class="icon-btn" href="#home" aria-label="חזרה">${ICON.back}</a></div>
+     <h1>${p.name}</h1><p>${p.desc}</p>
+     <div class="stats"><div><b>${its.length}</b>${k==="vid"?"סרטונים":"פרקים"}</div><div><b>${Math.round(total/60)}</b>שעות תוכן</div>${p.subs?`<div><b>${Object.keys(p.subs).length}</b>${k==="vid"?"פינות":k==="mm"?"ענפים":"נושאים"}</div>`:""}</div></div>
+   ${p.subs?`<div class="chips" id="pchips" style="padding-top:16px"></div>`:""}
+   <div class="grid" id="pgrid"></div>`;
+  const grid=el.querySelector("#pgrid");
+  const fill=s=>{const list=its.filter(v=>s==="all"||v.sub===s);
+    grid.innerHTML=list.map((v,i)=>card(v,i===0?"big":"")).join("");grid.classList.remove("swap");void grid.offsetWidth;grid.classList.add("swap");hydrate(grid)};
+  if(p.subs)chips(el.querySelector("#pchips"),[["all","הכל",its.length],...Object.entries(p.subs).map(([s,l])=>[s,l,its.filter(v=>v.sub===s).length]).filter(x=>x[2])],"all",fill);
+  fill("all");
+}
+
+/* ===== VIDEO PAGE ===== */
+let liked={};try{liked=JSON.parse(localStorage.getItem("wsp-liked")||"{}")}catch(e){}
+function renderVideo(id){
+  const v=byId[id];if(!v){location.hash="home";return}
+  const p=P[v.p],el=document.getElementById("s-video");
+  const more=itemsOf(v.p).filter(x=>x.id!==id).slice(0,10);
+  const intro=v.ep?`בפרק ${v.ep} של ${p.name} מתארחת`:`ב${p.name} הפעם`;
+  el.innerHTML=`<div class="vhero" style="--c1:${p.c1};--c2:${p.c2}">
+      <div class="vt-img" style="position:absolute;inset:0">${thumbHTML(v)}</div><div class="shade"></div>
+      <div class="vtop"><button class="icon-btn" id="vback" aria-label="חזרה">${ICON.back}</button>
+        <div class="grp"><button class="icon-btn" id="vshare" aria-label="שיתוף">${ICON.share}</button></div></div>
+      <button class="vplay" id="vplay" aria-label="נגן">${ICON.play}</button>
+      <div class="player" id="player"></div>
+    </div>
+    <div class="vbody">
+      <a class="kick" href="#p-${v.p}">${p.name}${v.sub&&p.subs?` · ${p.subs[v.sub]}`:""}</a>
+      <h1>${v.name}</h1><p class="role">${v.role}</p>
+      <div class="facts"><div><b>${v.dur}</b>אורך</div>${v.ep?`<div><b>#${v.ep}</b>פרק</div>`:""}<div><b>WSP</b>הפקה מקורית</div></div>
+      <div class="vactions">
+        <button class="btn btn-p" id="vplay2">${ICON.play}לצפייה עכשיו</button>
+        <button class="btn btn-o${liked[id]?" liked":""}" id="vlike" aria-label="שמירה למועדפים">${ICON.heart}</button>
+        <a class="btn btn-o" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener" aria-label="פתיחה ביוטיוב">${ICON.yt}</a>
+      </div>
+      <div class="about"><b>על ${v.ep?"הפרק":"הסרטון"}</b>${intro} ${v.name}: ${v.role}. ${p.desc}</div>
+    </div>
+    <div class="sec"><div class="sec-h"><div><h2>עוד <span>מ${p.short}</span></h2></div><a class="see" href="#p-${v.p}">הכל ${ICON.back.replace('M9 6l6 6-6 6','M15 6l-6 6 6 6')}</a></div>
+      <div class="rail" id="moreRail">${more.map(x=>card(x,"c-port")).join("")}</div></div>`;
+  hydrate(el);
+  const play=()=>{const pl=el.querySelector("#player");pl.classList.add("on");
+    pl.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${v.name}"></iframe>`;
+    el.querySelector(".vhero").scrollIntoView({behavior:"smooth"})};
+  el.querySelector("#vplay").onclick=play;el.querySelector("#vplay2").onclick=play;
+  el.querySelector("#vback").onclick=()=>history.length>1?history.back():(location.hash="home");
+  el.querySelector("#vlike").onclick=e=>{const b=e.currentTarget;liked[id]=!liked[id];b.classList.toggle("liked",liked[id]);try{localStorage.setItem("wsp-liked",JSON.stringify(liked))}catch(_){}};
+  el.querySelector("#vshare").onclick=async()=>{const url=`https://www.youtube.com/watch?v=${id}`;
+    try{if(navigator.share){await navigator.share({title:v.name,url})}else{await navigator.clipboard.writeText(url);toast("הקישור הועתק")}}catch(_){} };
+}
+function toast(t){const d=document.createElement("div");d.textContent=t;Object.assign(d.style,{position:"fixed",bottom:"96px",left:"50%",transform:"translateX(-50%)",background:"var(--ink)",color:"var(--bg)",padding:"10px 18px",borderRadius:"999px",fontSize:"13px",zIndex:60});document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
+
+/* ===== SEARCH ===== */
+function renderSearch(){
+  const q=document.getElementById("q"),res=document.getElementById("sres");
+  chips(document.getElementById("sugg"),["כדוריד","כדורעף","אולימפית","פראלימפית","אלופת העולם","תזונה","נבחרת ישראל"].map(s=>[s,s]),null,s=>{q.value=s;run()});
+  const run=()=>{const t=q.value.trim();
+    const list=t?ALL.filter(v=>(v.name+" "+v.role+" "+P[v.p].name+" "+(P[v.p].subs?.[v.sub]||"")).includes(t)):ALL.slice(0,8);
+    res.innerHTML=list.length?list.slice(0,30).map(v=>card(v,"")).join(""):`<div class="empty" style="grid-column:1/-1">לא מצאנו תוצאות ל"${t}". נסי שם של ספורטאית או ענף.</div>`;
+    hydrate(res)};
+  q.oninput=run;run();
+}
+
+/* ===== ROUTER (hash) with shared-element transition into the video page ===== */
+const screens=[...document.querySelectorAll(".screen")];
+let lastTap=null;
+document.addEventListener("click",e=>{const a=e.target.closest("[data-vt]");if(a)lastTap=a;const g=e.target.closest("[data-go]");if(g)location.hash=g.dataset.go});
+function route(){
+  const h=decodeURIComponent(location.hash.slice(1))||"home";
+  let scr="home",tab=h;
+  if(h.startsWith("v-")){scr="video";renderVideo(h.slice(2));tab=""}
+  else if(h.startsWith("p-")){const k=h.slice(2);if(!P[k]){location.hash="home";return}scr="program";renderProgram(k);tab=k==="pod"?"p-pod":"programs"}
+  else if(["programs","search","about","home"].includes(h))scr=h;
+  screens.forEach(s=>s.classList.toggle("on",s.id==="s-"+scr));
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",()=>{
+  const goingVideo=location.hash.startsWith("#v-")&&lastTap&&document.startViewTransition&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(goingVideo){const th=lastTap.querySelector(".th");if(th)th.style.viewTransitionName="vthumb";
+    document.startViewTransition(()=>{if(th)th.style.viewTransitionName="";route();const n=document.querySelector("#s-video .vt-img");if(n){n.style.viewTransitionName="vthumb";requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>n.style.viewTransitionName="",600)))}});lastTap=null}
+  else route();
+});
+
+renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();
+hydrate();route();
+</script>
+</body>
+</html>
