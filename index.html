@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WSP — הקול של הספורטאיות</title>
-<meta name="theme-color" content="#FBEAF1">
+<meta name="theme-color" content="#FBEAF1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#170A11" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="WSP">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -647,6 +655,139 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
 .laurel{width:38px;height:96px}
 @supports not (overflow:clip){html,body,#s-about,#s-awards{overflow-x:hidden}}
 
+
+/* ===== NOTIFICATIONS + INSTALL ===== */
+.icon-btn.dot.has::after{animation:live 1.6s infinite}
+.icon-btn.dot:not(.has)::after{display:none}
+.ov{position:fixed;inset:0;z-index:85;background:rgba(30,6,18,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:fade .25s}
+.panel{width:100%;max-width:520px;max-height:92vh;overflow:auto;background:var(--solid);border-radius:32px 32px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:sheetUp2 .4s cubic-bezier(.2,.9,.2,1);overscroll-behavior:contain}
+.pn-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pn-h h2{margin:0;font-family:var(--display);font-size:44px;line-height:.9}
+.pn-h p{margin:4px 0 0;font-size:13px;color:var(--ink2)}
+.pn-h .icon-btn{flex:none;background:var(--bg)}
+.pcard{position:relative;margin-top:18px;padding:20px;border-radius:26px;overflow:hidden;color:#fff;background:radial-gradient(120% 100% at 100% 0%,#FF6FA6,#C2187A 55%,#6B1E57);box-shadow:var(--shadow)}
+.pcard .bell{position:absolute;left:14px;top:12px;width:86px;height:86px;opacity:.95}
+.pcard .bell svg{width:100%;height:100%;transform-origin:50% 10%;animation:ring 2.6s ease-in-out infinite}
+@keyframes ring{0%,60%,100%{transform:rotate(0)}64%{transform:rotate(14deg)}70%{transform:rotate(-12deg)}76%{transform:rotate(8deg)}82%{transform:rotate(-5deg)}88%{transform:rotate(2deg)}}
+.pcard .bell i{position:absolute;top:14px;right:10px;min-width:22px;height:22px;border-radius:11px;background:#fff;color:#C2187A;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center;animation:pop2 .6s .4s backwards cubic-bezier(.3,1.6,.5,1)}
+.pcard h3{margin:0;font-family:var(--display);font-size:34px;line-height:.92;max-width:11ch}
+.pcard p{margin:8px 0 0;font-size:13.5px;line-height:1.45;opacity:.92;max-width:30ch}
+.pcard .btn{margin-top:14px}
+.pcard .st{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.2);font-size:12.5px;font-weight:600}
+.pcard .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pcard .row .btn{margin:0}
+.btn-wo{background:rgba(255,255,255,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.pn-sec{margin-top:22px}
+.pn-sec>b{display:block;font-size:14px;margin-bottom:10px}
+.topics{display:grid;gap:8px}
+.topic{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:var(--bg);cursor:pointer}
+.topic .ti{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;font-size:18px;background:var(--solid);flex:none}
+.topic div{flex:1;min-width:0}.topic div b{display:block;font-size:14px}.topic div span{font-size:12px;color:var(--ink2)}
+.sw{position:relative;width:46px;height:28px;flex:none}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.sw i{position:absolute;inset:0;border-radius:14px;background:var(--line);transition:background .25s;pointer-events:none}
+.sw i::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+.sw input:checked+i{background:var(--pink)}
+.sw input:checked+i::after{transform:translateX(-18px)}
+.sw input:focus-visible+i{outline:2px solid var(--pink);outline-offset:2px}
+.feed{display:grid;gap:6px}
+.fi{display:flex;gap:12px;align-items:center;padding:10px;border-radius:18px;transition:background .2s;text-align:start}
+.fi:hover{background:var(--bg)}
+.fi .fth{position:relative;width:58px;height:58px;border-radius:16px;overflow:hidden;flex:none;background:linear-gradient(150deg,var(--blush),var(--lilac))}
+.fi .fth img{width:100%;height:100%;object-fit:cover}
+.fi .fth em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:24px}
+.fi div{flex:1;min-width:0}.fi small{font-size:11px;color:var(--pink);font-weight:700}.fi b{display:block;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fi span{font-size:12px;color:var(--ink2)}
+.fi.new::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--pink);flex:none}
+
+/* install guide */
+.in-brand{display:flex;gap:12px;align-items:center}
+.in-brand img{width:58px;height:58px;border-radius:15px;box-shadow:0 10px 20px -10px var(--pink)}
+.in-brand h2{font-size:36px}
+.perks{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.perks span{padding:7px 11px;border-radius:999px;background:var(--bg);font-size:12px;font-weight:500}
+.plat{display:flex;gap:4px;margin-top:18px;padding:4px;border-radius:999px;background:var(--bg)}
+.plat button{flex:1;height:40px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--ink2);transition:all .25s}
+.plat button.on{background:var(--solid);color:var(--ink);box-shadow:0 4px 12px -4px rgba(120,20,70,.3)}
+.inapp{margin-top:12px;padding:12px 14px;border-radius:16px;background:#FFF3D6;color:#6B4A00;font-size:13px;line-height:1.5}
+.guide{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center;margin-top:18px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:18px;cursor:pointer;transition:all .3s;opacity:.55}
+.steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--bg);font-weight:700;font-size:13px;transition:all .3s}
+.steps li.on{opacity:1;background:var(--bg)}
+.steps li.on::before{background:var(--pink);color:#fff}
+.steps li b{display:block;font-size:14px;line-height:1.3}.steps li span{display:block;font-size:12.5px;color:var(--ink2);margin-top:3px;line-height:1.4}
+.steps .kbd{display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:7px;background:var(--solid);box-shadow:0 0 0 1px var(--line);font-size:12px;font-weight:600;color:var(--ink);vertical-align:middle}
+.steps .kbd svg{width:13px;height:13px}
+/* phone mockup */
+.mock{position:relative;width:150px;height:300px;border-radius:28px;background:#14070F;padding:7px;box-shadow:0 20px 40px -18px rgba(120,20,70,.6)}
+.mock.desk{width:150px;height:110px;border-radius:12px;padding:5px;align-self:start;margin-top:30px}
+.scr{position:relative;width:100%;height:100%;border-radius:22px;overflow:hidden;background:#FBEAF1}
+.mock.desk .scr{border-radius:8px}
+.scn{position:absolute;inset:0;opacity:0;transition:opacity .45s}
+.scn.on{opacity:1}
+.m-site{position:absolute;inset:0;padding:22px 9px 0;display:grid;gap:6px;align-content:start}
+.m-site i{display:block;height:10px;border-radius:5px;background:#F2C7DA}
+.m-site i:first-child{height:44px;border-radius:10px;background:linear-gradient(150deg,#FF7AB0,#B0287A)}
+.m-site i:nth-child(3){width:70%}
+.m-bar{position:absolute;inset:auto 0 0 0;height:34px;background:#F6F6F8;border-top:1px solid #E3E3E8;display:flex;justify-content:space-around;align-items:center;padding:0 8px}
+.m-bar b{width:14px;height:14px;border-radius:3px;background:#C9C9D0;display:block}
+.m-top{position:absolute;inset:0 0 auto 0;height:26px;background:#F6F6F8;border-bottom:1px solid #E3E3E8;display:flex;align-items:center;gap:5px;padding:0 7px}
+.m-top .url{flex:1;height:14px;border-radius:7px;background:#E6E6EB}
+.m-top b{width:12px;height:12px;border-radius:3px;background:#C9C9D0;display:block}
+.hl{position:relative;color:#0A84FF}
+.hl::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid var(--pink);animation:tap 1.4s ease-out infinite}
+@keyframes tap{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.m-sheet{position:absolute;inset:auto 0 0 0;height:72%;background:#F2F2F7;border-radius:14px 14px 0 0;padding:10px 8px;display:grid;gap:5px;align-content:start;transform:translateY(100%);transition:transform .5s cubic-bezier(.2,.9,.2,1) .15s}
+.scn.on .m-sheet{transform:none}
+.m-sheet span{display:flex;align-items:center;justify-content:space-between;height:22px;padding:0 8px;border-radius:7px;background:#fff;font-size:8.5px;color:#333}
+.m-sheet span.go{background:#fff;box-shadow:0 0 0 2px var(--pink);font-weight:700}
+.m-sheet span svg{width:10px;height:10px}
+.m-dlg{position:absolute;inset:26px 6px auto 6px;background:#fff;border-radius:10px;padding:8px;box-shadow:0 10px 24px -8px rgba(0,0,0,.35);transform:scale(.85);opacity:0;transition:all .45s cubic-bezier(.3,1.4,.5,1) .15s}
+.scn.on .m-dlg{transform:none;opacity:1}
+.m-dlg .r{display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#888}
+.m-dlg .r b{color:#0A84FF;font-size:9px}
+.m-dlg .r b.hl{color:#0A84FF}
+.m-dlg .ic{display:flex;gap:6px;align-items:center;margin-top:8px;font-size:9px;font-weight:700;color:#222}
+.m-dlg .ic img{width:24px;height:24px;border-radius:6px}
+.m-dlg .btns{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;font-size:8.5px;font-weight:700}
+.m-dlg .btns b{color:#fff;background:#1A73E8;padding:4px 8px;border-radius:12px}
+.m-home{position:absolute;inset:0;background:linear-gradient(160deg,#5B2A86,#C2187A 60%,#FF8DB8);padding:26px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px;align-content:start}
+.m-home i{aspect-ratio:1;border-radius:7px;background:rgba(255,255,255,.35)}
+.m-home .me{background:none;position:relative}
+.m-home .me img{width:100%;border-radius:7px;animation:appPop .6s .3s cubic-bezier(.3,1.7,.5,1) backwards;box-shadow:0 0 0 2px #fff}
+@keyframes appPop{from{transform:scale(0)}}
+.mock.desk .m-home{grid-template-columns:repeat(6,1fr);padding:12px}
+.in-act{margin-top:18px;display:grid;gap:8px;justify-items:center;text-align:center}
+.in-act .btn{width:100%;justify-content:center;height:54px}
+.in-note{margin:0;font-size:12.5px;color:var(--ink2);line-height:1.5}
+/* smart banner */
+.appban{position:fixed;z-index:44;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;padding:10px 10px 10px 8px;border-radius:22px;background:color-mix(in srgb,var(--solid) 92%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 0 0 1px var(--line),0 20px 40px -16px rgba(120,20,70,.45);animation:banIn .5s cubic-bezier(.2,.9,.2,1)}
+@keyframes banIn{from{transform:translateY(30px);opacity:0}}
+.appban img{width:44px;height:44px;border-radius:12px;flex:none}
+.appban div{flex:1;min-width:0}.appban b{display:block;font-size:14px}.appban span{font-size:12px;color:var(--ink2)}
+.appban .btn{height:38px;padding:0 16px;font-size:13px}
+.appban .x{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--ink2);flex:none}
+.appban .x svg{width:16px;height:16px}
+.nav-tools{display:none}
+@media (min-width:1024px){
+  .ov{align-items:stretch;justify-content:flex-start}
+  .panel{max-width:440px;max-height:none;height:100%;border-radius:0 32px 32px 0;padding:28px 26px;animation:drawer .45s cubic-bezier(.2,.9,.2,1)}
+  @keyframes drawer{from{transform:translateX(-100%)}}
+  #install{align-items:center;justify-content:center}
+  #install .panel{max-width:760px;height:auto;max-height:90vh;border-radius:34px;animation:sheetPop .4s cubic-bezier(.2,.9,.2,1);padding:30px 32px}
+  @keyframes sheetPop{from{opacity:0;transform:scale(.94)}}
+  .guide{grid-template-columns:220px minmax(0,1fr);gap:30px}
+  .mock{width:200px;height:400px;border-radius:36px;padding:9px}.scr{border-radius:28px}
+  .mock.desk{width:220px;height:150px}
+  .appban{display:none!important}
+  .nav-tools{display:flex;gap:6px}
+  .nav-tools button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:14px;background:var(--bg);font-size:13px;font-weight:600;position:relative}
+  .nav-tools svg{width:16px;height:16px}
+  .nt-dot{position:absolute;top:8px;left:10px;width:7px;height:7px;border-radius:50%;background:var(--pink)}
+  body[data-mode="awards"] .nav-tools button{background:rgba(255,255,255,.07);color:#FFD9E8}
+}
+@media (min-width:1024px) and (max-width:1279px){.nav-tools{display:none}}
+
 /* mobile defaults for desktop-only elements */
 .top-search,.nav-brand,.nav-foot,.rail-nav{display:none}
 .feat-side .picks-sec{margin-top:26px}
@@ -892,7 +1033,8 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
       <div class="logo"><div><b>WSP</b><small>הקול של הספורטאיות בישראל</small></div></div>
       <button class="top-search" data-go="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>חיפוש ספורטאית, ענף או תכנית</button>
       <button class="icon-btn" data-go="search" aria-label="חיפוש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
-      <button class="icon-btn dot" aria-label="התראות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+      <button class="icon-btn inst-btn" data-open="install" aria-label="התקנת האפליקציה" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+      <button class="icon-btn dot" data-open="notif" aria-label="התראות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
     </header>
     <div class="greet">
       <h1>הבמה של <em>ספורט הנשים</em></h1>
@@ -1114,9 +1256,48 @@ body[data-mode="awards"] .nav button{color:#FFD9E8}
   <button data-go="about" data-tab="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>אודות</span></button>
   <div class="nav-foot">
     <a class="nav-cta" href="#awards"><span class="nc-star">★</span><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. בחרו את הספורטאיות שלכן</span><em>להצבעה</em></a>
+    <div class="nav-tools"><button data-open="notif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>התראות<i class="nt-dot"></i></button><button data-open="install" class="inst-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>התקנה</button></div>
     <div class="nav-soc"><a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@womenssportpower" target="_blank" rel="noopener">TikTok</a><a href="https://www.youtube.com/channel/UC6duCxv3pdUP6j7Ch6MZTAQ" target="_blank" rel="noopener">YouTube</a></div>
   </div>
 </nav>
+
+
+<!-- ===== NOTIFICATIONS CENTER ===== -->
+<div class="ov" id="notif" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ntTitle">
+    <div class="pn-h"><div><h2 id="ntTitle">התראות</h2><p>מה חדש ב־WSP, ומה תרצו לקבל</p></div><button class="icon-btn" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="pcard" id="pushCard"></div>
+    <div class="pn-sec"><b>על מה להתריע לי</b>
+      <div class="topics" id="topics"></div>
+    </div>
+    <div class="pn-sec"><b>עדכונים אחרונים</b><div class="feed" id="feed"></div></div>
+  </div>
+</div>
+
+<!-- ===== INSTALL GUIDE ===== -->
+<div class="ov" id="install" hidden>
+  <div class="panel wide" role="dialog" aria-modal="true" aria-labelledby="inTitle">
+    <div class="pn-h"><div class="in-brand"><img src="icons/icon-192.png" alt=""><div><h2 id="inTitle">WSP באפליקציה</h2><p>גישה מהירה מהמסך הראשי, בלי חנות אפליקציות</p></div></div><button class="icon-btn" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="perks"><span>⚡ נפתחת מהר</span><span>🔔 התראות על פרקים חדשים</span><span>📴 עובדת גם בלי קליטה</span></div>
+    <div class="plat" role="tablist" id="platTabs">
+      <button data-plat="ios">אייפון</button><button data-plat="android">אנדרואיד</button><button data-plat="desktop">מחשב</button>
+    </div>
+    <div class="inapp" id="inappNote" hidden>נראה שפתחת את האתר מתוך אינסטגרם או פייסבוק. כדי להתקין, פתחו קודם את הקישור ב־<b id="inappBrowser">ספארי</b>: לחצו על ⋯ ואז "פתיחה בדפדפן".</div>
+    <div class="guide">
+      <div class="mock" id="mock" aria-hidden="true"></div>
+      <ol class="steps" id="steps"></ol>
+    </div>
+    <div class="in-act"><button class="btn btn-p" id="installNow" hidden>התקנה בלחיצה אחת</button><p class="in-note" id="inNote"></p></div>
+  </div>
+</div>
+
+<!-- ===== SMART APP BANNER ===== -->
+<div class="appban" id="appBanner" hidden>
+  <img src="icons/icon-192.png" alt="">
+  <div><b>WSP באפליקציה</b><span>פרקים חדשים ישר לנייד שלך</span></div>
+  <button class="btn btn-p" data-open="install">התקנה</button>
+  <button class="x" id="banX" aria-label="לא עכשיו"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+</div>
 
 <script src="articles-data.js"></script>
 <script>
@@ -1832,6 +2013,181 @@ function heroArrows(){
 document.addEventListener("wheel",e=>{if(!DESK.matches||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;const r=e.target.closest(".rail");if(!r||r.closest("#s-video"))return;
   const max=r.scrollWidth-r.clientWidth,x=Math.abs(r.scrollLeft);if((e.deltaY>0&&x>=max-2)||(e.deltaY<0&&x<=2))return;e.preventDefault();r.scrollLeft-=e.deltaY},{passive:false});
 
+
+/* ===== PWA: install + push notifications =====
+   Push delivery needs a backend: set PUSH.vapidPublicKey (VAPID) and PUSH.subscribeUrl
+   (endpoint that stores the subscription + chosen topics). Without them the app still
+   asks permission, saves topics and can show local notifications.                    */
+const PUSH={vapidPublicKey:"",subscribeUrl:""};
+const ua=navigator.userAgent;
+const isIOS=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const isAndroid=/android/i.test(ua);
+const inApp=/Instagram|FBAN|FBAV|Line\/|TikTok/i.test(ua);
+const isStandalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+let deferredPrompt=null,swReg=null;
+const LS={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+  addEventListener("load",()=>navigator.serviceWorker.register("sw.js").then(r=>swReg=r).catch(()=>{}));
+}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;refreshInstallUI()});
+addEventListener("appinstalled",()=>{deferredPrompt=null;LS.set("wsp-installed",true);closeOv("install");toast("האפליקציה הותקנה 🎉");refreshInstallUI()});
+
+function refreshInstallUI(){
+  const show=!isStandalone()&&!LS.get("wsp-installed",false);
+  document.querySelectorAll(".inst-btn").forEach(b=>b.hidden=!show);
+}
+
+/* ---------- overlays ---------- */
+function openOv(id){const o=document.getElementById(id);o.hidden=false;document.body.style.overflow="hidden";if(id==="notif")renderNotif();if(id==="install")renderInstall();setTimeout(()=>o.querySelector("[data-close]")?.focus(),50)}
+function closeOv(id){const o=document.getElementById(id);if(!o||o.hidden)return;o.hidden=true;if(!document.querySelector(".ov:not([hidden])"))document.body.style.overflow="";if(id==="install")clearInterval(stepTimer)}
+document.addEventListener("click",e=>{
+  const op=e.target.closest("[data-open]");if(op){e.preventDefault();if(op.dataset.open==="install")closeOv("notif");openOv(op.dataset.open);return}
+  const cl=e.target.closest("[data-close]");if(cl){closeOv(cl.closest(".ov").id);return}
+  if(e.target.classList.contains("ov"))closeOv(e.target.id);
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".ov:not([hidden])").forEach(o=>closeOv(o.id))});
+
+/* ---------- notifications center ---------- */
+const TOPICS=[
+ {k:"pod",i:"🎙️",t:"פרקים חדשים בפודקאסט",d:"כל שבוע אורחת חדשה"},
+ {k:"shows",i:"📺",t:"התכניות שלנו",d:"התקפה מתפרצת, מגרש מסכם ועוד"},
+ {k:"articles",i:"📰",t:"כתבות וראיונות",d:"ידיעות ודעות מצוות הכתבות"},
+ {k:"awards",i:"🏆",t:"מצטיינות השנה",d:"פתיחת הצבעה והכרזה על הזוכות"},
+ {k:"events",i:"📅",t:"אירועים וכנסים",d:"מפגשים, כנסים ושידורים חיים"}];
+const FEED=[
+ {id:"f-pod54",k:"pod",href:"#v-I-wK8blhLkY",yt:"I-wK8blhLkY",l:"פרק חדש בפודקאסט",t:"#54: גל חמרני",s:"קפטנית נבחרת הכדורשער"},
+ {id:"f-aw26",k:"awards",href:"#awards",em:"🏆",l:"מצטיינות השנה 2026",t:"ההצבעה פתוחה",s:"בחרו את ספורטאיות השנה"},
+ {id:"f-art0",k:"articles",href:"#a-0",wix:ARTICLES[0].img,l:"כתבה חדשה",t:ARTICLES[0].t,s:ARTICLES[0].a},
+ {id:"f-hm38",k:"shows",href:"#v-5HFdgbtaxAI",yt:"5HFdgbtaxAI",l:"התקפה מתפרצת",t:"פרק 38: מייקל גילת",s:"מהכדורסל המקצועני למסע של שינוי"},
+ {id:"f-mm24",k:"shows",href:"#v-POlooD7GplM",yt:"POlooD7GplM",l:"מגרש מסכם",t:"פרק 24: דניאל ברנובסקי",s:"ספיישל כדוריד"}];
+let topics=LS.get("wsp-topics",{pod:true,shows:true,articles:true,awards:true,events:false});
+const seen=new Set(LS.get("wsp-seen",[]));
+function updateBellDot(){const unread=FEED.some(f=>!seen.has(f.id));document.querySelectorAll(".icon-btn.dot").forEach(b=>b.classList.toggle("has",unread));document.querySelectorAll(".nt-dot").forEach(d=>d.hidden=!unread)}
+function pushState(){
+  if(isIOS&&!isStandalone())return "ios-install";
+  if(!("Notification" in window)||!("serviceWorker" in navigator))return "unsupported";
+  return Notification.permission; // default | granted | denied
+}
+const BELL='<div class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i>3</i></div>';
+function renderNotif(){
+  const st=pushState(),c=document.getElementById("pushCard");
+  const on=LS.get("wsp-push-on",false)&&st==="granted";
+  c.innerHTML=BELL+({
+    "default":`<h3>אל תפספסו אף פרק</h3><p>קבלו התראה ברגע שעולה פרק, כתבה או הצבעה חדשה. רק על מה שתבחרו.</p><button class="btn btn-w" id="pushOn">הפעלת התראות</button>`,
+    "granted":on?`<h3>ההתראות פעילות</h3><p>נעדכן אותך לפי הנושאים שבחרת למטה.</p><div class="row"><button class="btn btn-w" id="pushTest">שליחת התראת ניסיון</button><button class="btn btn-wo" id="pushOff">כיבוי</button></div>`
+                :`<h3>אל תפספסו אף פרק</h3><p>הדפדפן כבר מאשר התראות. נשאר רק להפעיל.</p><button class="btn btn-w" id="pushOn">הפעלת התראות</button>`,
+    "denied":`<h3>ההתראות חסומות</h3><p>חסמת התראות מהאתר. כדי לאפשר: לחצו על סמל המנעול ליד הכתובת, בחרו "הרשאות" ואפשרו "התראות", ואז רעננו את הדף.</p>`,
+    "ios-install":`<h3>באייפון זה עובד מהאפליקציה</h3><p>אפל מאפשרת התראות רק אחרי שמוסיפים את WSP למסך הבית. זה לוקח 10 שניות.</p><button class="btn btn-w" data-open="install">איך מתקינים</button>`,
+    "unsupported":`<h3>הדפדפן לא תומך בהתראות</h3><p>נסו לפתוח את האתר בכרום או בספארי מעודכנים.</p>`
+  }[st]);
+  const pOn=document.getElementById("pushOn");if(pOn)pOn.onclick=enablePush;
+  const pOff=document.getElementById("pushOff");if(pOff)pOff.onclick=disablePush;
+  const pT=document.getElementById("pushTest");if(pT)pT.onclick=()=>localNotify("WSP","ככה תיראה התראה על פרק חדש 🎙️","#p-pod");
+  document.getElementById("topics").innerHTML=TOPICS.map(t=>`<label class="topic"><span class="ti">${t.i}</span><div><b>${t.t}</b><span>${t.d}</span></div><span class="sw"><input type="checkbox" id="tp-${t.k}" data-topic="${t.k}" ${topics[t.k]?"checked":""}><i></i></span></label>`).join("");
+  document.querySelectorAll("[data-topic]").forEach(i=>i.onchange=()=>{topics[i.dataset.topic]=i.checked;LS.set("wsp-topics",topics);syncSubscription()});
+  document.getElementById("feed").innerHTML=FEED.map(f=>`<a class="fi${seen.has(f.id)?"":" new"}" href="${f.href}" data-feed="${f.id}"><span class="fth">${f.yt?`<img src="https://i.ytimg.com/vi/${f.yt}/mqdefault.jpg" alt="" referrerpolicy="no-referrer">`:f.wix?`<img src="${AIMG(f.wix,120,120)}" alt="" referrerpolicy="no-referrer">`:`<em>${f.em}</em>`}</span><div><small>${f.l}</small><b>${f.t}</b><span>${f.s}</span></div></a>`).join("");
+  document.querySelectorAll("[data-feed]").forEach(a=>a.onclick=()=>{seen.add(a.dataset.feed);LS.set("wsp-seen",[...seen]);updateBellDot();closeOv("notif")});
+}
+const b64u=s=>{const p="=".repeat((4-s.length%4)%4),r=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))};
+async function enablePush(){
+  try{
+    const perm=await Notification.requestPermission();
+    if(perm!=="granted"){renderNotif();return}
+    const reg=swReg||await navigator.serviceWorker.ready;
+    if(PUSH.vapidPublicKey){
+      const sub=await reg.pushManager.getSubscription()||await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(PUSH.vapidPublicKey)});
+      LS.set("wsp-sub",sub.toJSON());await syncSubscription();
+    }
+    LS.set("wsp-push-on",true);renderNotif();
+    localNotify("ההתראות הופעלו ✓","מעכשיו נעדכן אותך על תוכן חדש מ־WSP","#home");
+  }catch(err){toast("לא הצלחנו להפעיל התראות. נסו שוב.")}
+}
+async function disablePush(){
+  try{const reg=swReg||await navigator.serviceWorker.ready;const sub=await reg.pushManager.getSubscription();if(sub)await sub.unsubscribe()}catch(_){}
+  LS.set("wsp-push-on",false);renderNotif();toast("ההתראות כובו");
+}
+async function syncSubscription(){
+  const sub=LS.get("wsp-sub",null);if(!PUSH.subscribeUrl||!sub)return;
+  try{await fetch(PUSH.subscribeUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({subscription:sub,topics:Object.keys(topics).filter(k=>topics[k])})})}catch(_){}
+}
+async function localNotify(title,body,url){
+  try{const reg=swReg||await navigator.serviceWorker?.ready;if(reg&&Notification.permission==="granted"){reg.showNotification(title,{body,icon:"icons/icon-192.png",badge:"icons/badge-96.png",dir:"rtl",lang:"he",data:{url}});return}}catch(_){}
+  toast(title);
+}
+
+/* ---------- install guide ---------- */
+const SHARE_I='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+const PLUS_I='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+const DOTS_I='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+const INST_I='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 8v6M9 11l3 3 3-3M8 21h8"/></svg>';
+const HOME=`<div class="m-home">${'<i></i>'.repeat(6)}<span class="me"><img src="icons/icon-192.png" alt=""></span>${'<i></i>'.repeat(5)}</div>`;
+const SITE_M='<div class="m-site"><i></i><i></i><i></i><i></i><i></i></div>';
+const GUIDES={
+ ios:{desk:false,steps:[
+   {t:`לחצו על כפתור השיתוף`,d:`בסרגל התחתון של ספארי: <span class="kbd">${SHARE_I} שיתוף</span>`},
+   {t:`בחרו "הוסף למסך הבית"`,d:`גללו מעט ברשימה ולחצו על <span class="kbd">${PLUS_I} הוסף למסך הבית</span>`},
+   {t:`לחצו "הוסף"`,d:`בפינה העליונה. האייקון של WSP יופיע במסך הבית`}],
+  scenes:[
+   `${SITE_M}<div class="m-bar"><b></b><b></b><span class="hl" style="width:16px;height:16px;display:grid;place-items:center">${SHARE_I.replace('<svg','<svg width="14" height="14"')}</span><b></b><b></b></div>`,
+   `${SITE_M}<div class="m-sheet"><span>העתקה <b></b></span><span>הוספה לרשימת הקריאה</span><span class="go">הוסף למסך הבית ${PLUS_I}</span><span>סימון</span></div>`,
+   `${SITE_M}<div class="m-dlg"><div class="r"><span>ביטול</span><b class="hl">הוסף</b></div><div class="ic"><img src="icons/icon-192.png" alt="">WSP</div></div>`,
+   HOME],
+  note:"זמין בספארי באייפון ובאייפד. אחרי ההתקנה פתחו את WSP מהמסך הראשי והפעילו התראות."},
+ android:{desk:false,steps:[
+   {t:`פתחו את התפריט`,d:`בכרום לחצו על <span class="kbd">${DOTS_I}</span> בפינה העליונה`},
+   {t:`בחרו "התקנת האפליקציה"`,d:`או "הוספה למסך הבית" בגרסאות מסוימות`},
+   {t:`אשרו "התקנה"`,d:`WSP תופיע במסך הבית וברשימת האפליקציות`}],
+  scenes:[
+   `<div class="m-top"><div class="url"></div><span class="hl" style="display:grid;place-items:center;width:12px;height:14px;color:#555">${DOTS_I.replace('<svg','<svg width="12" height="12"')}</span></div>${SITE_M}`,
+   `<div class="m-top"><div class="url"></div><b></b></div>${SITE_M}<div class="m-dlg" style="inset:22px 6px auto 30%"><div class="m-sheet" style="position:static;transform:none;height:auto;background:none;padding:0"><span>כרטיסייה חדשה</span><span>היסטוריה</span><span class="go">התקנת האפליקציה ${INST_I}</span><span>הגדרות</span></div></div>`,
+   `${SITE_M}<div class="m-dlg" style="inset:auto 6px 30% 6px"><div class="ic"><img src="icons/icon-192.png" alt="">להתקין את האפליקציה?</div><div class="btns"><span>ביטול</span><b class="hl">התקנה</b></div></div>`,
+   HOME],
+  note:"עובד בכרום, סמסונג אינטרנט ואדג'."},
+ desktop:{desk:true,steps:[
+   {t:`לחצו על סמל ההתקנה`,d:`בקצה שורת הכתובת בכרום או באדג': <span class="kbd">${INST_I}</span>`},
+   {t:`אשרו "התקנה"`,d:`בחלונית שנפתחת`},
+   {t:`פתחו מהמחשב`,d:`WSP תיפתח בחלון משלה, ותופיע בתפריט התחל או ב־Dock`}],
+  scenes:[
+   `<div class="m-top"><div class="url"></div><span class="hl" style="display:grid;place-items:center;width:12px;height:12px;color:#555">${INST_I.replace('<svg','<svg width="11" height="11"')}</span></div>${SITE_M}`,
+   `<div class="m-top"><div class="url"></div><b></b></div><div class="m-dlg"><div class="ic"><img src="icons/icon-192.png" alt="">להתקין את WSP?</div><div class="btns"><span>ביטול</span><b class="hl">התקנה</b></div></div>`,
+   HOME],
+  note:"בספארי במק: תפריט קובץ ← \"הוספה ל־Dock\"."}
+};
+let plat=isIOS?"ios":isAndroid?"android":"desktop",step=0,stepTimer;
+function renderInstall(){
+  document.getElementById("inappNote").hidden=!inApp;
+  document.getElementById("inappBrowser").textContent=isIOS?"ספארי":"כרום";
+  document.querySelectorAll("#platTabs button").forEach(b=>{b.classList.toggle("on",b.dataset.plat===plat);b.onclick=()=>{plat=b.dataset.plat;renderInstall()}});
+  const g=GUIDES[plat],mock=document.getElementById("mock");
+  mock.className="mock"+(g.desk?" desk":"");
+  mock.innerHTML=`<div class="scr">${g.scenes.map((sc,i)=>`<div class="scn" data-s="${i}">${sc}</div>`).join("")}</div>`;
+  const st=document.getElementById("steps");
+  st.innerHTML=g.steps.map((x,i)=>`<li data-step="${i}"><div><b>${x.t}</b><span>${x.d}</span></div></li>`).join("");
+  st.onclick=e=>{const li=e.target.closest("[data-step]");if(li){goStep(+li.dataset.step);restart()}};
+  const nowBtn=document.getElementById("installNow"),canPrompt=!!deferredPrompt&&plat!=="ios";
+  nowBtn.hidden=!canPrompt;
+  nowBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();const r=await deferredPrompt.userChoice;deferredPrompt=null;if(r.outcome!=="accepted")toast("אפשר להתקין בכל זמן מהתפריט");refreshInstallUI();renderInstall()};
+  document.getElementById("inNote").textContent=isStandalone()?"WSP כבר מותקנת במכשיר הזה ✓":(canPrompt?"או לפי השלבים למעלה. ":"")+g.note;
+  step=0;goStep(0);restart();
+}
+function goStep(i){
+  const g=GUIDES[plat],n=g.scenes.length;step=(i+n)%n;
+  document.querySelectorAll("#mock .scn").forEach(s=>s.classList.toggle("on",+s.dataset.s===step));
+  document.querySelectorAll("#steps li").forEach(li=>li.classList.toggle("on",+li.dataset.step===Math.min(step,g.steps.length-1)));
+}
+function restart(){clearInterval(stepTimer);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)stepTimer=setInterval(()=>goStep(step+1),2600)}
+
+/* ---------- smart banner (mobile, not installed) ---------- */
+function maybeBanner(){
+  if(isStandalone()||matchMedia("(min-width:1024px)").matches)return;
+  const until=LS.get("wsp-ban-until",0);if(Date.now()<until)return;
+  const visits=LS.get("wsp-visits",0)+1;LS.set("wsp-visits",visits);
+  setTimeout(()=>{if(document.querySelector(".ov:not([hidden])"))return;document.getElementById("appBanner").hidden=false},visits>1?4000:15000);
+}
+document.getElementById("banX").onclick=()=>{document.getElementById("appBanner").hidden=true;LS.set("wsp-ban-until",Date.now()+14*864e5)};
+document.querySelector("#appBanner [data-open]").addEventListener("click",()=>document.getElementById("appBanner").hidden=true);
+
 /* ===== ROUTER (hash) with shared-element transition into the video page ===== */
 const screens=[...document.querySelectorAll(".screen")];
 let lastTap=null;
@@ -1860,7 +2216,7 @@ window.addEventListener("hashchange",()=>{
   else route();
 });
 
-renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();railArrows();heroArrows();
+renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();railArrows();heroArrows();refreshInstallUI();updateBellDot();maybeBanner();
 hydrate();route();
 </script>
 </body>

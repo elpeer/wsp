@@ -1,0 +1,26 @@
+{
+  "name": "WSP – הקול של הספורטאיות בישראל",
+  "short_name": "WSP",
+  "description": "פודקאסטים, תכניות, כתבות ומצטיינות השנה מעולם ספורט הנשים בישראל",
+  "lang": "he",
+  "dir": "rtl",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#FBEAF1",
+  "theme_color": "#E63A7E",
+  "categories": ["sports", "news", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "הפודקאסט", "url": "/#p-pod", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "מצטיינות השנה", "url": "/#awards", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "כתבות", "url": "/#articles", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
