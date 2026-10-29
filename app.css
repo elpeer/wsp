@@ -1065,3 +1065,14 @@ body.has-mini .appban,body.has-mini .toc-fab{display:none!important}
 @media (min-width:1024px){#s-video.mini .player{inset:auto auto 24px 24px;width:400px;border-radius:22px}.mini-ctl button{width:34px;height:34px}}
 @media (prefers-reduced-motion:reduce){#s-video.mini .player{animation:none}}
 #s-video.mini .vhero{z-index:47}
+
+/* breadcrumbs over imagery: frosted pill so they stay readable on any photo */
+#s-video .vbody .crumbs{padding:0 0 12px;margin:0;-webkit-mask:none;mask:none}
+#s-video .vbody .crumbs ol{display:inline-flex;max-width:100%;overflow-x:auto;scrollbar-width:none;padding:4px;border-radius:999px;
+  background:color-mix(in srgb,var(--solid) 82%,transparent);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 0 0 1px var(--line),0 8px 20px -12px rgba(90,10,50,.45)}
+#s-video .vbody .crumbs ol::-webkit-scrollbar{display:none}
+#s-video .vbody .crumbs li,#s-video .vbody .crumbs a{color:var(--ink);opacity:1}
+#s-video .vbody .crumbs li+li::before{opacity:.45}
+#s-video .vbody .crumbs [aria-current]{background:var(--pink);color:#fff}
+.crumbs.light ol{display:inline-flex;max-width:100%;padding:4px;border-radius:999px;background:rgba(20,4,12,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.crumbs.light li,.crumbs.light a{color:#fff}
