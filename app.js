@@ -153,7 +153,7 @@ function renderProgram(k){
 let liked={};try{liked=JSON.parse(localStorage.getItem("wsp-liked")||"{}")}catch(e){}
 function renderVideo(id){
   const v=byId[id];if(!v){go("home",{replace:true});return}
-  const p=P[v.p],el=document.getElementById("s-video");el.classList.remove("playing");
+  mini.detach();const p=P[v.p],el=document.getElementById("s-video");el.classList.remove("playing");
   const more=itemsOf(v.p).filter(x=>x.id!==id).slice(0,10);
   const intro=v.ep?`בפרק ${v.ep} של ${p.name} מתארחת`:`ב${p.name} הפעם`;
   el.innerHTML=`<div class="vhero" style="--c1:${p.c1};--c2:${p.c2}">
@@ -177,8 +177,11 @@ function renderVideo(id){
     <div class="sec"><div class="sec-h"><div><h2>עוד <span>מ${p.short}</span></h2></div><a class="see" href="#p-${v.p}">הכל ${ICON.back.replace('M9 6l6 6-6 6','M15 6l-6 6 6 6')}</a></div>
       <div class="rail" id="moreRail">${more.map(x=>card(x,"c-port")).join("")}</div></div>`;
   hydrate(el);
-  const play=()=>{const pl=el.querySelector("#player");pl.classList.add("on");el.classList.add("playing");
-    pl.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${v.name}"></iframe>`;
+  const play=()=>{const pl=el.querySelector("#player");if(pl.querySelector("iframe")){mini.dismissed=false;scrollTo({top:0,behavior:"smooth"});return}
+    pl.classList.add("on");el.classList.add("playing");
+    pl.innerHTML=`<iframe id="ytFrame" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${v.name}"></iframe>
+      <div class="mini-ctl"><button data-mini="expand" aria-label="חזרה לנגן"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><button data-mini="close" aria-label="סגירת הנגן הצף"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
+    mini.attach(el,pl);
     scrollTo({top:0,behavior:"smooth"})};
   el.querySelector("#vplay").onclick=play;el.querySelector("#vplay2").onclick=play;
   el.querySelector("#vback").onclick=()=>history.length>1&&curKey!==firstKey?history.back():go("home");
@@ -728,6 +731,33 @@ document.getElementById("q").addEventListener("input",e=>document.getElementById
 document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("s-search").classList.contains("on")&&!document.querySelector(".mov:not([hidden])"))closeSearch()});
 
+
+/* ===== floating mini player: video follows the reader while it is playing ===== */
+const mini={state:-1,heroVisible:true,dismissed:false,floating:false,el:null,pl:null,io:null,
+  attach(el,pl){this.detach();this.el=el;this.pl=pl;this.state=1;this.dismissed=false;
+    const f=pl.querySelector("iframe");
+    const hello=()=>{try{f.contentWindow.postMessage(JSON.stringify({event:"listening",id:"wsp",channel:"widget"}),"*");f.contentWindow.postMessage(JSON.stringify({event:"command",func:"addEventListener",args:["onStateChange"],id:"wsp",channel:"widget"}),"*")}catch(_){}};
+    f.addEventListener("load",()=>{hello();setTimeout(hello,800)});
+    this.io=new IntersectionObserver(([en])=>{this.heroVisible=en.intersectionRatio>.35;if(this.heroVisible)this.dismissed=false;this.update()},{threshold:[0,.35,.6,1]});
+    this.io.observe(el.querySelector(".vhero"));
+    pl.querySelector(".mini-ctl").onclick=e=>{const b=e.target.closest("[data-mini]");if(!b)return;e.stopPropagation();
+      if(b.dataset.mini==="expand"){this.dismissed=true;this.update();scrollTo({top:0,behavior:"smooth"})}
+      else{this.cmd("pauseVideo");this.dismissed=true;this.update()}};
+  },
+  detach(){if(this.io)this.io.disconnect();this.io=null;if(this.el)this.el.classList.remove("mini");document.body.classList.remove("has-mini");this.floating=false;this.el=this.pl=null},
+  cmd(func){try{this.pl.querySelector("iframe").contentWindow.postMessage(JSON.stringify({event:"command",func,args:[],id:"wsp",channel:"widget"}),"*")}catch(_){}},
+  update(){if(!this.el)return;
+    const playing=this.state===1||this.state===3;
+    const want=!this.heroVisible&&!this.dismissed&&(playing||(this.floating&&this.state===2));
+    if(want!==this.floating){this.floating=want;this.el.classList.toggle("mini",want);document.body.classList.toggle("has-mini",want)}}
+};
+addEventListener("message",e=>{
+  if(!mini.el||!/(^|\.)youtube(-nocookie)?\.com$/.test((()=>{try{return new URL(e.origin).hostname}catch(_){return""}})()))return;
+  let d;try{d=typeof e.data==="string"?JSON.parse(e.data):e.data}catch(_){return}
+  if(d&&d.event==="infoDelivery"&&d.info&&typeof d.info.playerState==="number"){mini.state=d.info.playerState;mini.update()}
+  else if(d&&d.event==="onStateChange"){mini.state=typeof d.info==="number"?d.info:d.info?.playerState;mini.update()}
+});
+
 /* ===== ROUTER (real URLs via History API) + SEO meta + breadcrumbs ===== */
 const SEO=window.WSPSEO;
 const screens=[...document.querySelectorAll(".screen")];
@@ -788,6 +818,7 @@ function route(h){
   else if(["programs","search","about","home","articles","awards"].includes(h))scr=h;
   else if(h==="about-contact"||h==="about-team"){scr="about";tab="about"}
   closeSheet();
+  if(scr!=="video"){mini.detach();const pl=document.querySelector("#s-video .player");if(pl){pl.innerHTML="";pl.classList.remove("on")}document.getElementById("s-video").classList.remove("playing")}
   screens.forEach(s=>s.classList.toggle("on",s.id==="s-"+scr));
   document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
   window.scrollTo(0,0);
