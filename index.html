@@ -29,6 +29,7 @@
       <button class="top-search" data-go="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>חיפוש ספורטאית, ענף או תכנית</button>
       <button class="icon-btn" data-go="search" aria-label="חיפוש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
       <button class="icon-btn inst-btn" data-open="install" aria-label="התקנת האפליקציה" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+      <button class="icon-btn fav-btn" data-go="me" aria-label="האזור שלי והמועדפים"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.3 3.7 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.5 0 5.8 3.3 4.5 6.8C19.5 15.4 12 20 12 20z"/></svg><span class="fav-n" hidden></span></button>
       <button class="icon-btn dot" data-open="notif" aria-label="התראות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
     </header>
     <div class="greet">
@@ -144,6 +145,14 @@
     </defs></svg>
   </section>
 
+  <!-- PERSONAL AREA -->
+  <section class="screen" id="s-me">
+    <header class="top"><div class="logo"><div><b>האזור שלי</b><small>מה ששמרת ומה שצפית לאחרונה</small></div></div></header>
+    <div class="me-stats" id="meStats"></div>
+    <div class="tabs" id="meTabs" role="tablist"></div>
+    <div id="meBody"></div>
+  </section>
+
   <!-- SEARCH -->
   <section class="screen" id="s-search">
     <header class="top"><div class="logo"><div><b>חיפוש</b><small>ספורטאית, ענף, אורח או נושא</small></div></div>
@@ -252,7 +261,7 @@
   <button data-go="about" data-tab="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>אודות</span></button>
   <div class="nav-foot">
     <a class="nav-cta" href="#awards"><span class="nc-star">★</span><b>מצטיינות השנה 2026</b><span>ההצבעה פתוחה. בחרו את הספורטאיות שלכן</span><em>להצבעה</em></a>
-    <div class="nav-tools"><button data-open="notif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>התראות<i class="nt-dot"></i></button><button data-open="install" class="inst-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>התקנה</button></div>
+    <div class="nav-tools"><button data-go="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.3 3.7 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.5 0 5.8 3.3 4.5 6.8C19.5 15.4 12 20 12 20z"/></svg>שמורים<span class="fav-n" hidden></span></button><button data-open="notif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>התראות<i class="nt-dot"></i></button><button data-open="install" class="inst-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>התקנה</button></div>
     <div class="nav-soc"><a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@womenssportpower" target="_blank" rel="noopener">TikTok</a><a href="https://www.youtube.com/channel/UC6duCxv3pdUP6j7Ch6MZTAQ" target="_blank" rel="noopener">YouTube</a></div>
   </div>
 </nav>

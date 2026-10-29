@@ -151,6 +151,13 @@ function renderProgram(k){
 
 /* ===== VIDEO PAGE ===== */
 let liked={};try{liked=JSON.parse(localStorage.getItem("wsp-liked")||"{}")}catch(e){}
+/* favorites + history (per device). video keys = YouTube id, article keys = "a:"+slug */
+const favKeys=()=>Object.keys(liked).filter(k=>liked[k]);
+function toggleFav(key,on){liked[key]=on;if(!on)delete liked[key];try{localStorage.setItem("wsp-liked",JSON.stringify(liked))}catch(_){}updateFavCount();
+  if(on)toast2("נשמר למועדפים","לאזור שלי","me");else toast("הוסר מהמועדפים")}
+function updateFavCount(){const n=favKeys().length;document.querySelectorAll(".fav-n").forEach(b=>{b.hidden=!n;b.textContent=n})}
+function pushHistory(key){let h=[];try{h=JSON.parse(localStorage.getItem("wsp-history")||"[]")}catch(_){}h=[key,...h.filter(k=>k!==key)].slice(0,40);try{localStorage.setItem("wsp-history",JSON.stringify(h))}catch(_){}}
+function toast2(t,cta,key){const d=document.createElement("div");d.className="toast2";d.innerHTML=`<span>${t}</span><button>${cta}</button>`;d.querySelector("button").onclick=()=>{d.remove();go(key)};document.body.appendChild(d);setTimeout(()=>d.classList.add("out"),2600);setTimeout(()=>d.remove(),3000)}
 function renderVideo(id){
   const v=byId[id];if(!v){go("home",{replace:true});return}
   mini.detach();const p=P[v.p],el=document.getElementById("s-video");el.classList.remove("playing");
@@ -185,7 +192,7 @@ function renderVideo(id){
     scrollTo({top:0,behavior:"smooth"})};
   el.querySelector("#vplay").onclick=play;el.querySelector("#vplay2").onclick=play;
   el.querySelector("#vback").onclick=()=>history.length>1&&curKey!==firstKey?history.back():go("home");
-  el.querySelector("#vlike").onclick=e=>{const b=e.currentTarget;liked[id]=!liked[id];b.classList.toggle("liked",liked[id]);try{localStorage.setItem("wsp-liked",JSON.stringify(liked))}catch(_){}};
+  el.querySelector("#vlike").onclick=e=>{const b=e.currentTarget,on=!liked[id];b.classList.toggle("liked",on);toggleFav(id,on)};
   el.querySelector("#vshare").onclick=async()=>{const url=location.origin+WSPSEO.keyToPath("v-"+id);
     try{if(navigator.share){await navigator.share({title:v.name,url})}else{await navigator.clipboard.writeText(url);toast("הקישור הועתק")}}catch(_){} };
 }
@@ -386,7 +393,7 @@ function renderArticle(i){
   const toc=m.toc.length>=2?`<nav class="toc" aria-label="תוכן העניינים"><div class="toc-h"><b>תוכן העניינים</b><span>${m.toc.length} חלקים · ${m.mins} דק׳ קריאה</span></div><ol>${m.toc.map(h=>`<li class="${h.t}"><a href="#${h.id}" data-toc="${h.id}">${esc(h.x)}</a></li>`).join("")}</ol></nav>`:"";
   const rel=ARTICLES.map((x,k)=>({x,k})).filter(o=>o.k!==i&&o.x.tag===a.tag).concat(ARTICLES.map((x,k)=>({x,k})).filter(o=>o.k!==i&&o.x.tag!==a.tag)).slice(0,6);
   const next=ARTICLES[(i+1)%ARTICLES.length];
-  const share=`<div class="share"><button data-share="copy" aria-label="העתקת קישור"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button><a href="https://wa.me/?text=${encodeURIComponent(a.t+" "+url)}" target="_blank" rel="noopener" aria-label="שיתוף בוואטסאפ"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg></a><a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener" aria-label="שיתוף בפייסבוק"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8V6.5c0-.7.3-1.5 1.5-1.5H17V2h-2.6C11.6 2 11 4 11 5.8V8H9v3h2v11h3V11h2.6l.4-3z"/></svg></a></div>`;
+  const fk="a:"+a.slug;const share=`<div class="share"><button data-fav="${fk}" class="${liked[fk]?"liked":""}" aria-label="שמירה למועדפים"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.3 3.7 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.5 0 5.8 3.3 4.5 6.8C19.5 15.4 12 20 12 20z"/></svg></button><button data-share="copy" aria-label="העתקת קישור"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button><a href="https://wa.me/?text=${encodeURIComponent(a.t+" "+url)}" target="_blank" rel="noopener" aria-label="שיתוף בוואטסאפ"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg></a><a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener" aria-label="שיתוף בפייסבוק"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8V6.5c0-.7.3-1.5 1.5-1.5H17V2h-2.6C11.6 2 11 4 11 5.8V8H9v3h2v11h3V11h2.6l.4-3z"/></svg></a></div>`;
   const el=document.getElementById("s-article");
   el.innerHTML=`<div class="prog" id="aprog"></div>
    <header class="ahero"><img src="${AIMG(a.img,1600,1000)}" alt="" referrerpolicy="no-referrer">
@@ -414,6 +421,7 @@ function renderArticle(i){
     if(e.target.id==="tocSheet"){e.target.hidden=true;return}
     const z=e.target.closest("[data-zoom]");if(z){const lb=document.getElementById("lb");lb.querySelector("img").src=AIMG(z.dataset.zoom,2000,1400).replace("fill","fit").replace(",al_c","");lb.hidden=false;return}
     if(e.target.closest("#lb")){document.getElementById("lb").hidden=true;return}
+    const fv=e.target.closest("[data-fav]");if(fv){const on=!liked[fv.dataset.fav];el.querySelectorAll(`[data-fav="${fv.dataset.fav}"]`).forEach(b=>b.classList.toggle("liked",on));toggleFav(fv.dataset.fav,on);return}
     const sc=e.target.closest('[data-share="copy"]');if(sc){try{await navigator.clipboard.writeText(url);toast("הקישור הועתק")}catch(_){toast(url)}}
   };
   // active section in TOC
@@ -732,6 +740,40 @@ document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")e
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("s-search").classList.contains("on")&&!document.querySelector(".mov:not([hidden])"))closeSearch()});
 
 
+
+/* ===== personal area: favorites + recently viewed ===== */
+let meTab="fav";
+function renderMe(){
+  let hist=[];try{hist=JSON.parse(localStorage.getItem("wsp-history")||"[]")}catch(_){}
+  const favs=favKeys(),vids=favs.filter(k=>!k.startsWith("a:")&&byId[k]).map(k=>byId[k]),arts=favs.filter(k=>k.startsWith("a:")).map(k=>ARTICLES.findIndex(a=>"a:"+a.slug===k)).filter(i=>i>=0);
+  const hv=hist.filter(k=>k.startsWith("v-")&&byId[k.slice(2)]),ha=hist.filter(k=>k.startsWith("a-")&&ARTICLES[+k.slice(2)]);
+  document.getElementById("meStats").innerHTML=`<div><b>${vids.length}</b><span>פרקים שמורים</span></div><div><b>${arts.length}</b><span>כתבות שמורות</span></div><div><b>${hv.length+ha.length}</b><span>נצפו לאחרונה</span></div>`;
+  tabs(document.getElementById("meTabs"),[["fav","מועדפים"],["hist","נצפו לאחרונה"],["set","הגדרות"]],meTab,k=>{meTab=k;renderMe()});
+  const body=document.getElementById("meBody");
+  const empty=(icon,t,d,cta,key)=>`<div class="me-empty"><div class="ei">${icon}</div><b>${t}</b><p>${d}</p><button class="btn btn-p" data-go="${key}">${cta}</button></div>`;
+  const favBtn=k=>`<button class="unfav" data-unfav="${k}" aria-label="הסרה מהמועדפים">${ICON.heart}</button>`;
+  if(meTab==="fav"){
+    if(!vids.length&&!arts.length){body.innerHTML=empty("🤍","עוד לא שמרת כלום","לחצו על הלב בעמוד של פרק או כתבה, והם יחכו לכם כאן.","לפרקים בפודקאסט","p-pod");return}
+    body.innerHTML=(vids.length?`<div class="sec-h me-h"><h2>פרקים <span>ששמרת</span></h2></div><div class="grid me-grid">${vids.map(v=>`<div class="favwrap">${card(v,"")}${favBtn(v.id)}</div>`).join("")}</div>`:"")+
+      (arts.length?`<div class="sec-h me-h"><h2>כתבות <span>ששמרת</span></h2></div><div class="alist">${arts.map(i=>`<div class="favwrap">${arow(ARTICLES[i],i)}${favBtn("a:"+ARTICLES[i].slug)}</div>`).join("")}</div>`:"");
+  }else if(meTab==="hist"){
+    if(!hv.length&&!ha.length){body.innerHTML=empty("🕘","עוד לא צפית בכלום","פרקים וכתבות שתפתחו יופיעו כאן, כדי שיהיה קל לחזור אליהם.","לעמוד הבית","home");return}
+    body.innerHTML=(hv.length?`<div class="sec-h me-h"><h2>פרקים <span>אחרונים</span></h2></div><div class="rail">${hv.map(k=>card(byId[k.slice(2)],"c-port")).join("")}</div>`:"")+
+      (ha.length?`<div class="sec-h me-h"><h2>כתבות <span>אחרונות</span></h2></div><div class="alist">${ha.map(k=>arow(ARTICLES[+k.slice(2)],+k.slice(2))).join("")}</div>`:"")+
+      `<div class="me-clear"><button class="btn btn-ghost" id="clearHist">ניקוי ההיסטוריה</button></div>`;
+    document.getElementById("clearHist").onclick=()=>{try{localStorage.removeItem("wsp-history")}catch(_){}renderMe();toast("ההיסטוריה נוקתה")};
+  }else{
+    const pushOn=LS.get("wsp-push-on",false)&&("Notification" in window)&&Notification.permission==="granted";
+    body.innerHTML=`<div class="me-set">
+      <button class="me-row" data-open="notif"><span class="ri">🔔</span><div><b>התראות</b><span>${pushOn?"פעילות":"כבויות"} · בחירת נושאים</span></div><i>‹</i></button>
+      ${isStandalone()?"":`<button class="me-row" data-open="install"><span class="ri">📲</span><div><b>התקנת האפליקציה</b><span>WSP במסך הבית שלך</span></div><i>‹</i></button>`}
+      <button class="me-row" data-go="awards"><span class="ri">🏆</span><div><b>ההצבעות שלי</b><span>מצטיינות השנה 2026</span></div><i>‹</i></button>
+      <p class="me-note">המועדפים וההיסטוריה נשמרים במכשיר הזה בלבד.</p></div>`;
+  }
+  hydrate(body);realLinks(body);
+  body.querySelectorAll("[data-unfav]").forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();const w=b.closest(".favwrap");w.classList.add("bye");setTimeout(()=>{toggleFav(b.dataset.unfav,false);renderMe()},280)});
+}
+
 /* ===== floating mini player: video follows the reader while it is playing ===== */
 const mini={state:-1,heroVisible:true,dismissed:false,floating:false,el:null,pl:null,io:null,
   attach(el,pl){this.detach();this.el=el;this.pl=pl;this.state=1;this.dismissed=false;
@@ -798,7 +840,7 @@ function setMeta(info){
   ld.textContent=JSON.stringify(SEO.jsonLd(info,location.origin));
 }
 /* breadcrumbs: one slot per screen */
-const CRUMB_SLOT={programs:["#s-programs",".top","after"],articles:["#s-articles",".top","after"],search:["#s-search",".top","after"],about:["#s-about",null,"prepend"],
+const CRUMB_SLOT={me:["#s-me",".top","after"],programs:["#s-programs",".top","after"],articles:["#s-articles",".top","after"],search:["#s-search",".top","after"],about:["#s-about",null,"prepend"],
   awards:["#s-awards",".aw-top","after",1],program:["#s-program",".vtop","after",1],video:["#s-video",".vbody","prepend"],article:["#s-article",".ahero .crumb","inside",1]};
 function mountCrumbs(scr,info){
   document.querySelectorAll(".screen:not(#s-"+scr+") .crumbs-slot").forEach(n=>n.innerHTML="");
@@ -815,13 +857,14 @@ function route(h){
   if(h.startsWith("v-")){scr="video";renderVideo(h.slice(2));tab=""}
   else if(h.startsWith("p-")){const k=h.slice(2);if(!P[k]){go("home",{replace:true});return}scr="program";renderProgram(k);tab=k==="pod"?"p-pod":"programs"}
   else if(h.startsWith("a-")){scr="article";renderArticle(+h.slice(2));tab="articles"}
-  else if(["programs","search","about","home","articles","awards"].includes(h))scr=h;
+  else if(["programs","search","about","home","articles","awards","me"].includes(h))scr=h;
   else if(h==="about-contact"||h==="about-team"){scr="about";tab="about"}
   closeSheet();
   if(scr!=="video"){mini.detach();const pl=document.querySelector("#s-video .player");if(pl){pl.innerHTML="";pl.classList.remove("on")}document.getElementById("s-video").classList.remove("playing")}
   screens.forEach(s=>s.classList.toggle("on",s.id==="s-"+scr));
   document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
   window.scrollTo(0,0);
+  if(scr==="me")renderMe();if(h.startsWith("v-")||h.startsWith("a-"))pushHistory(h);
   const info=SEO.pageInfo(h);setMeta(info);mountCrumbs(scr,info);realLinks(document.getElementById("s-"+scr));
   if(scr==="about"){requestAnimationFrame(aboutEnter);if(h!=="about")setTimeout(()=>document.getElementById(h==="about-contact"?"abContact":"abTeam")?.scrollIntoView({behavior:"smooth"}),300)}
   if(scr==="search"){const q=new URLSearchParams(location.search).get("q");const qi=document.getElementById("q");if(q){qi.value=q;qi.dispatchEvent(new Event("input"))}setTimeout(()=>qi.focus({preventScroll:true}),350)}
@@ -839,7 +882,7 @@ function navigate(key=keyFromLocation()){
 addEventListener("popstate",()=>navigate());
 addEventListener("hashchange",()=>{const h=decodeURIComponent(location.hash.slice(1));if(SEO.isKey(h)){history.replaceState({key:h},"",SEO.keyToPath(h));navigate(h)}});
 
-renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();railArrows();heroArrows();refreshInstallUI();updateBellDot();maybeBanner();
+renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();renderArticlesHome();renderArticles();initAwards();railArrows();heroArrows();refreshInstallUI();updateBellDot();maybeBanner();updateFavCount();
 hydrate();
 (function boot(){const k=keyFromLocation();firstKey=k;
   if(location.hash&&SEO.isKey(decodeURIComponent(location.hash.slice(1))))history.replaceState({key:k},"",SEO.keyToPath(k)+location.search);

@@ -22,7 +22,7 @@
   function keyToPath(key) {
     if (!key || key === "home") return "/";
     if (key === "about-contact" || key === "about-team") return "/about";
-    if (["programs", "articles", "awards", "about", "search"].includes(key)) return "/" + key;
+    if (["programs", "articles", "awards", "about", "search", "me"].includes(key)) return "/" + key;
     if (key === "p-pod") return "/podcast";
     if (key.startsWith("p-")) return "/programs/" + (SLUG[key.slice(2)] || key.slice(2));
     if (key.startsWith("v-")) return "/video/" + key.slice(2);
@@ -39,10 +39,10 @@
     if (seg[0] === "programs") return seg[1] ? (SLUG2K[seg[1]] ? "p-" + SLUG2K[seg[1]] : null) : "programs";
     if (seg[0] === "video" && seg[1]) return video(seg[1]) ? "v-" + seg[1] : null;
     if (seg[0] === "articles") { if (!seg[1]) return "articles"; const i = articleIndexBySlug(seg.slice(1).join("/")); return i >= 0 ? "a-" + i : null; }
-    if (["awards", "about", "search"].includes(seg[0]) && seg.length === 1) return seg[0];
+    if (["awards", "about", "search", "me"].includes(seg[0]) && seg.length === 1) return seg[0];
     return null;
   }
-  const isKey = k => /^(home|programs|articles|awards|about|search|about-contact|about-team|p-.+|v-.+|a-\d+)$/.test(k);
+  const isKey = k => /^(home|programs|articles|awards|about|search|me|about-contact|about-team|p-.+|v-.+|a-\d+)$/.test(k);
 
   /* ---------- helpers ---------- */
   const ytThumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
@@ -77,6 +77,7 @@
     }
     if (key === "awards") return { key, title: `מצטיינות השנה 2026 – הצבעה | ${BRAND}`, desc: "בחרו את ספורטאיות השנה שהובילו את ספורט הנשים בישראל. הזוכות יקבלו הצטיינות בכנס המצטיינות של WSP ב־30.7.26.", image: wix("974295_96e14de4d64f4c84a9107f3ebfab0d81~mv2.png"), type: "website", crumbs: [home, ["מצטיינות השנה 2026", "awards"]] };
     if (key === "about" || key === "about-contact" || key === "about-team") return { key: "about", title: `על המיזם – הצוות, השותפים ויצירת קשר | ${BRAND}`, desc: "WSP היא פלטפורמה לקידום ספורט הנשים בישראל: הכירו את הצוות, השותפים, ואיך להצטרף, לתרום או לשתף פעולה.", image: wix("974295_fe7489b68ecd4298b446ce7f6ef248c6~mv2.jpeg"), type: "website", crumbs: [home, ["על המיזם", "about"]] };
+    if (key === "me") return { key, title: `האזור שלי | ${BRAND}`, desc: "הפרקים והכתבות ששמרת, מה שצפית לאחרונה והגדרות ההתראות.", image: ytThumb(P.pod.items[0][0]), type: "website", crumbs: [home, ["האזור שלי", "me"]], noindex: true };
     if (key === "search") return { key, title: `חיפוש | ${BRAND}`, desc: "חיפוש ספורטאיות, ענפים, תכניות ופרקים ב־WSP.", image: ytThumb(P.pod.items[0][0]), type: "website", crumbs: [home, ["חיפוש", "search"]], noindex: true };
     return null;
   }
