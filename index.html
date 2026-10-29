@@ -31,6 +31,7 @@
   --pink:#FF4F92; --pink2:#FF8DB8; --blush:#5A2240; --lilac:#7E64C8; --peach:#8A4A3A;
   --nav:#FFE3EE; --navfg:#2B1220; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}
 
+[hidden]{display:none!important}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px}
 body{min-height:100vh;overflow-x:hidden}
@@ -272,6 +273,160 @@ img{max-width:100%;display:block}
 .social a{flex:1;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:12px;font-weight:600;transition:all .2s}
 .social a:hover{background:var(--pink);color:#fff}
 
+
+/* ===== ABOUT ===== */
+#s-about{overflow-x:clip}
+.btn-ghost{background:var(--surface);box-shadow:0 0 0 1px var(--line);color:var(--ink)}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:2px;color:var(--pink);display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--pink)}
+.ab-sec{padding:0 18px;margin-top:40px}
+.ab-h2{font-family:var(--display);font-weight:700;font-size:44px;line-height:.9;margin:8px 0 0;text-wrap:balance}
+.ab-h2 em{font-style:normal;color:var(--pink)}
+
+.ab-hero{position:relative;padding:calc(env(safe-area-inset-top,0px) + 26px) 18px 0;overflow:hidden}
+.ab-fan{position:relative;height:250px;margin:0 auto 6px;max-width:330px}
+.ab-fan .ph{position:absolute;top:10px;width:150px;height:200px;border-radius:26px;overflow:hidden;box-shadow:0 24px 44px -18px rgba(170,30,90,.55);border:4px solid var(--solid);
+  background:linear-gradient(150deg,var(--blush),var(--lilac));opacity:0;animation:fanIn .9s cubic-bezier(.2,.9,.25,1.2) forwards,float 6s ease-in-out infinite}
+.ab-fan .ph img{width:100%;height:100%;object-fit:cover;object-position:top}
+.ab-fan .ph:nth-child(1){right:0;--r:8deg;animation-delay:.25s,1.2s;z-index:1}
+.ab-fan .ph:nth-child(2){left:50%;margin-left:-75px;top:0;--r:0deg;animation-delay:.1s,1.1s;z-index:2;width:160px;height:214px}
+.ab-fan .ph:nth-child(3){left:0;--r:-8deg;animation-delay:.4s,1.3s;z-index:1}
+@keyframes fanIn{from{opacity:0;transform:translateY(60px) rotate(0) scale(.8)}to{opacity:1;transform:rotate(var(--r))}}
+@keyframes float{50%{transform:rotate(var(--r)) translateY(-8px)}}
+.ab-fan .ph:nth-child(1),.ab-fan .ph:nth-child(3){transform:rotate(var(--r))}
+.ab-fan .sticker{position:absolute;z-index:3;bottom:8px;right:50%;margin-right:-70px;padding:8px 14px;border-radius:999px;background:var(--pink);color:#fff;font-size:12px;font-weight:600;transform:rotate(-6deg);box-shadow:0 10px 20px -8px var(--pink);animation:pop2 .6s .9s backwards cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop2{from{transform:scale(0) rotate(-30deg)}}
+.ab-kin{display:flex;flex-direction:column;align-items:flex-start;direction:ltr;font-family:var(--display);font-weight:700;font-size:clamp(54px,19vw,92px);line-height:.8;letter-spacing:1px}
+.ab-kin .kw{display:block;overflow:hidden;padding-top:6px}
+.ab-kin .kw{animation:kwIn .9s calc(.5s + var(--d)*.12s) cubic-bezier(.2,.9,.2,1) backwards}
+@keyframes kwIn{from{clip-path:inset(100% 0 0 0);transform:translateY(40%)}to{clip-path:inset(0 0 0 0)}}
+.ab-kin .pk{background:linear-gradient(100deg,var(--pink),#B04BD6,var(--pink2));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:kwIn .9s .74s cubic-bezier(.2,.9,.2,1) backwards,shine 5s 1.6s linear infinite}
+@keyframes shine{to{background-position:-200% 0}}
+.ab-lead{font-size:15.5px;line-height:1.55;color:var(--ink2);margin:16px 0 0;max-width:40ch}
+.ab-ctas{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+
+.ab-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:30px 18px 0}
+.ab-stats div{padding:14px 6px 12px;border-radius:22px;background:var(--surface);box-shadow:0 0 0 1px var(--line);text-align:center;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.ab-stats b{display:block;font-family:var(--display);font-size:40px;line-height:.9;color:var(--pink);font-variant-numeric:tabular-nums}
+.ab-stats span{font-size:11px;color:var(--ink2)}
+
+.marq{margin-top:34px;overflow:hidden;background:var(--ink);color:var(--bg);padding:12px 0;transform:rotate(-2deg);margin-inline:-10px}
+.marq-in{display:flex;gap:18px;width:max-content;animation:marq 22s linear infinite;font-family:var(--display);font-size:34px;line-height:1;align-items:center}
+.marq-in i{font-style:normal;color:var(--pink2);font-size:20px}
+@keyframes marq{to{transform:translateX(50%)}}
+
+.ab-words{font-size:22px;line-height:1.45;font-weight:500;margin:12px 0 0;max-width:30ch}
+.ab-words .w{opacity:.18;transition:opacity .5s,color .5s}
+.ab-words .w.on{opacity:1}
+.ab-words .w.hl{color:var(--pink)}
+
+.ab-story{position:relative;padding:26px 22px 24px;border-radius:30px;background:linear-gradient(150deg,var(--pink),#A93FCB);color:#fff;overflow:hidden;box-shadow:var(--shadow)}
+.ab-story .eyebrow{color:#fff}.ab-story .eyebrow::before{background:#fff}
+.ab-story::after{content:"״";position:absolute;left:12px;bottom:-60px;font-family:var(--display);font-size:220px;opacity:.15;line-height:1}
+.ab-story h2{font-family:var(--display);font-size:38px;line-height:.92;margin:10px 0 0;text-wrap:balance}
+.ab-story p{font-size:14.5px;line-height:1.6;opacity:.95;margin:12px 0 0}
+
+/* leads */
+.leads{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.lead{position:relative;border-radius:28px;overflow:hidden;color:#fff;height:250px;box-shadow:var(--shadow);text-align:start;isolation:isolate;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.lead:first-child{grid-column:1/-1;height:400px}
+.lead:hover{transform:translateY(-4px)}
+.lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.lead:hover img{transform:scale(1.06)}
+.lead::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(110,15,60,.92),rgba(200,40,110,.35) 40%,transparent 65%);z-index:1}
+.lead .lt{position:absolute;z-index:2;inset:auto 16px 16px 16px}
+.lead .role{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:11px;font-weight:600}
+.lead h3{font-family:var(--display);font-size:36px;line-height:.9;margin:8px 0 0}
+.lead:first-child h3{font-size:56px}
+.lead q{display:block;font-size:13.5px;line-height:1.45;margin-top:8px;opacity:.95;quotes:"״" "״"}
+.lead small{display:block;font-size:12px;opacity:.88;margin-top:4px;line-height:1.35}
+.lead .crown{position:absolute;z-index:2;top:14px;right:14px;width:40px;height:40px;border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 8px 18px -6px var(--pink)}
+.lead .crown svg{width:20px;height:20px}
+
+/* team grid */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.tm{text-align:center;opacity:0;transform:translateY(18px) scale(.96);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.tm.in{opacity:1;transform:none}
+.tm .tp{position:relative;aspect-ratio:3/4;border-radius:22px;overflow:hidden;background:linear-gradient(150deg,var(--blush),var(--lilac));box-shadow:0 12px 24px -14px rgba(170,30,90,.5)}
+.tm .tp img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.tm .tp::after{content:"";position:absolute;inset:0;background:var(--pink);mix-blend-mode:screen;opacity:.45;transition:opacity .5s}
+.tm:hover .tp img,.tm:focus-visible .tp img{filter:none;transform:scale(1.06)}
+.tm:hover .tp::after,.tm:focus-visible .tp::after{opacity:0}
+.tm b{display:block;font-size:13px;margin-top:8px;line-height:1.2}
+.tm span{display:block;font-size:11px;color:var(--ink2);line-height:1.3;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* sheet */
+.sheet-bg{position:fixed;inset:0;z-index:70;background:rgba(30,6,18,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fade .3s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:fixed;z-index:71;left:50%;bottom:0;width:min(460px,100%);transform:translateX(-50%);background:var(--solid);border-radius:32px 32px 0 0;padding:10px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:sheetUp .45s cubic-bezier(.2,.9,.2,1);max-height:88vh;overflow:auto}
+@keyframes sheetUp{from{transform:translate(-50%,100%)}}
+.sheet .grab{width:44px;height:5px;border-radius:5px;background:var(--line);margin:0 auto 14px}
+.sheet .sh{display:flex;gap:16px;align-items:flex-end}
+.sheet .sp{flex:none;width:120px;height:150px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.sheet .sp img{width:100%;height:100%;object-fit:cover;object-position:top}
+.sheet h3{font-family:var(--display);font-size:46px;line-height:.88;margin:0}
+.sheet .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sheet .tags span{padding:5px 10px;border-radius:999px;font-size:11.5px;font-weight:600;background:color-mix(in srgb,var(--pink) 14%,transparent);color:var(--pink)}
+.sheet ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}
+.sheet li{padding:12px 14px;border-radius:16px;background:var(--bg);font-size:14px;display:flex;gap:10px;align-items:center}
+.sheet li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
+.sheet .shows{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.sheet .x{position:absolute;top:14px;left:14px;width:38px;height:38px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+.sheet .x svg{width:16px;height:16px}
+
+/* join */
+.join{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.jt{position:relative;padding:18px 16px;border-radius:24px;background:var(--surface);box-shadow:0 0 0 1px var(--line);text-align:start;overflow:hidden;transition:transform .3s,box-shadow .3s;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.jt:hover{transform:translateY(-4px);box-shadow:0 0 0 1px var(--pink),var(--shadow)}
+.jt .ji{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--pink) 14%,transparent);color:var(--pink);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.jt:hover .ji{transform:rotate(-10deg) scale(1.1)}
+.jt .ji svg{width:22px;height:22px}
+.jt b{display:block;font-size:15px;margin-top:12px}
+.jt span{display:block;font-size:12px;color:var(--ink2);margin-top:3px;line-height:1.4}
+
+/* partners */
+.partners{overflow:hidden;margin-top:16px;padding:6px 0;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.partners .pin{display:flex;gap:12px;width:max-content;animation:marq 26s linear infinite}
+.partners:hover .pin{animation-play-state:paused}
+.plogo{flex:none;width:130px;height:130px;border-radius:28px;background:#fff;box-shadow:0 0 0 1px var(--line),0 14px 28px -18px rgba(170,30,90,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;transition:transform .3s}
+.plogo:hover{transform:translateY(-4px) rotate(-2deg)}
+.plogo img{width:72px;height:72px;object-fit:contain;border-radius:12px}
+.plogo span{font-size:11.5px;font-weight:600;color:#2B1220}
+.pcta{display:flex;flex-direction:column;gap:6px;padding:22px 20px;border-radius:28px;background:var(--ink);color:var(--bg)}
+.pcta b{font-family:var(--display);font-size:32px;line-height:.92}
+.pcta span{font-size:13.5px;opacity:.8;line-height:1.45}
+.pcta .btn{margin-top:10px;align-self:flex-start}
+
+/* form */
+.cform{position:relative;margin-top:18px;padding:18px;border-radius:30px;background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:grid;gap:12px}
+.subj{display:flex;flex-wrap:wrap;gap:6px}
+.subj button{padding:8px 13px;border-radius:999px;font-size:12.5px;font-weight:500;box-shadow:inset 0 0 0 1px var(--line);transition:all .25s}
+.subj button[aria-checked="true"]{background:var(--pink);color:#fff;box-shadow:none;transform:scale(1.04)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{position:relative;display:block}
+.fld input,.fld textarea{width:100%;border:0;border-radius:18px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px;padding:24px 14px 9px;outline:none;box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .25s;resize:vertical;text-align:right}
+.fld input[dir="ltr"]{text-align:left}
+.fld input:focus,.fld textarea:focus{box-shadow:inset 0 0 0 2px var(--pink)}
+.fld span{position:absolute;right:14px;top:16px;font-size:14px;color:var(--ink2);pointer-events:none;transition:all .2s}
+.fld input:focus+span,.fld input:not(:placeholder-shown)+span,.fld textarea:focus+span,.fld textarea:not(:placeholder-shown)+span{top:7px;font-size:11px;color:var(--pink);font-weight:600}
+.fld.bad input{box-shadow:inset 0 0 0 2px #E5484D;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
+.ferr{margin:0;font-size:12.5px;color:#E5484D}
+.fsend{justify-content:center;height:54px;font-size:15px}
+.fsend.busy{opacity:.7;pointer-events:none}
+.fsend.busy svg{animation:fly .8s ease-in infinite}
+@keyframes fly{to{transform:translate(-30px,-30px);opacity:0}}
+.fdone{position:absolute;inset:0;border-radius:30px;background:var(--solid);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:24px;animation:fade .4s}
+.fdone .ck{width:76px;height:76px;border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 16px 30px -10px var(--pink);animation:pop2 .6s cubic-bezier(.3,1.6,.5,1)}
+.fdone .ck svg{width:36px;height:36px;stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .35s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fdone b{font-family:var(--display);font-size:40px;margin-top:10px}
+.fdone span{font-size:14px;color:var(--ink2)}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv,.tm{opacity:1;transform:none}.ab-words .w{opacity:1}}
+
 @media (min-width:520px){
   .app{margin-top:24px;margin-bottom:24px;border-radius:44px;background:color-mix(in srgb,var(--bg) 70%,transparent);box-shadow:0 0 0 1px var(--line),0 40px 80px -30px rgba(160,30,90,.35);overflow:hidden;min-height:calc(100vh - 48px)}
   .top{border-radius:44px 44px 0 0}
@@ -361,16 +516,90 @@ img{max-width:100%;display:block}
 
   <!-- ABOUT -->
   <section class="screen" id="s-about">
-    <header class="top"><div class="logo"><div><b>על המיזם</b><small>WSP · Women Sport Power</small></div></div></header>
-    <div class="aboutp">
-      <div class="about"><b>מי אנחנו</b>WSP היא פלטפורמה לקידום ספורט הנשים בישראל. אנחנו נותנות במה לספורטאיות, יוצרות חשיפה ומקדמות את הענפים דרך תוכן, שידורים, ראיונות, פודקאסטים ואירועים.</div>
-      <div class="about"><b>מה תמצאו כאן</b>הפודקאסט הרשמי, שש תכניות קבועות, סיקורי ענפי הכדור, משאלי רחוב, פינות מקצועיות וכתבות שטח.</div>
+    <!-- hero: kinetic type + fanned team photos -->
+    <div class="ab-hero">
+      <div class="ab-fan" id="abFan" aria-hidden="true"></div>
+      <div class="ab-kin" aria-label="Women's Sports Power">
+        <span class="kw" style="--d:0">WOMEN'S</span><span class="kw" style="--d:1">SPORTS</span><span class="kw pk" style="--d:2">POWER</span>
+      </div>
+      <p class="ab-lead rv">פלטפורמה לחשיפת ספורט הנשים בישראל. נותנות במה לספורטאיות, מנגישות תוכן מקצועי ומחברות בין החברה לעולם ספורט הנשים.</p>
+      <div class="ab-ctas rv"><a class="btn btn-p" href="#about-contact" data-scroll="abContact">לשיתופי פעולה</a><a class="btn btn-ghost" href="#about-team" data-scroll="abTeam">הכירו את הצוות</a></div>
+    </div>
+
+    <div class="ab-stats" id="abStats"></div>
+
+    <div class="marq" aria-hidden="true"><div class="marq-in">
+      <span>נראה</span><i>✦</i><span>נגיש</span><i>✦</i><span>משפיע</span><i>✦</i><span>שוויון</span><i>✦</i><span>קהילה</span><i>✦</i><span>העצמה</span><i>✦</i>
+      <span>נראה</span><i>✦</i><span>נגיש</span><i>✦</i><span>משפיע</span><i>✦</i><span>שוויון</span><i>✦</i><span>קהילה</span><i>✦</i><span>העצמה</span><i>✦</i>
+    </div></div>
+
+    <div class="ab-sec">
+      <div class="eyebrow">המיזם</div>
+      <p class="ab-words" id="abMission">WSP הוא ערוץ של תכנים דיגיטליים, פודקאסטים, ראיונות, ניתוחים מקצועיים ופעילויות שטח. אנחנו מאמינות שייצוג נשי בספורט הוא אבן יסוד לשוויון, לחינוך לערכים ולתחושת המסוגלות של נשים ונערות.</p>
+    </div>
+
+    <div class="ab-sec">
+      <div class="ab-story rv">
+        <div class="eyebrow">הסיפור שלנו</div>
+        <h2>נולדנו מתוך אמונה בכוחן של נשים להוביל ולהצטיין</h2>
+        <p>קבוצה של ספורטאיות, מאמנות, מאמנים ואוהבי ספורט התאחדה סביב חזון אחד: במה שווה, מרחב תומך וקהילה מעצימה. כל יום אנחנו עובדות כדי שספורט הנשים יהיה נראה, נגיש ומשפיע.</p>
+      </div>
+    </div>
+
+    <!-- team -->
+    <div class="ab-sec" id="abTeam">
+      <div class="eyebrow">הצוות</div>
+      <h2 class="ab-h2">הקולות מאחורי <em>המיקרופון</em></h2>
+      <div class="leads" id="abLeads"></div>
+      <div class="chips" id="abTeamChips" style="padding-inline:0;padding-top:22px"></div>
+      <div class="tgrid" id="abTeamGrid"></div>
+    </div>
+
+    <!-- join -->
+    <div class="ab-sec">
+      <div class="eyebrow">הצטרפו אלינו</div>
+      <h2 class="ab-h2">יוצרות שינוי, <em>יחד</em></h2>
+      <div class="join" id="abJoin"></div>
+    </div>
+
+    <!-- partners -->
+    <div class="ab-sec">
+      <div class="eyebrow">שיתופי פעולה</div>
+      <h2 class="ab-h2">השותפים <em>לעשייה</em></h2>
+    </div>
+    <div class="partners" id="abPartners"></div>
+    <div class="ab-sec" style="margin-top:14px">
+      <div class="pcta rv"><b>רוצים לתת ערך מוסף לקידום ספורט הנשים?</b><span>חסות לתכנית, שיתוף תוכן, אירוע או קמפיין. נשמח לדבר.</span><a class="btn btn-w" href="#about-contact" data-scroll="abContact" data-subject="partner">בואו נדבר</a></div>
+    </div>
+
+    <!-- contact -->
+    <div class="ab-sec" id="abContact">
+      <div class="eyebrow">צרו קשר</div>
+      <h2 class="ab-h2">השאירו <em>פרטים</em></h2>
+      <form class="cform" id="cform" novalidate>
+        <div class="subj" role="radiogroup" aria-label="נושא הפנייה" id="cSubj"></div>
+        <div class="frow">
+          <label class="fld"><input id="cFirst" name="first" required placeholder=" " autocomplete="given-name"><span>שם פרטי *</span></label>
+          <label class="fld"><input id="cLast" name="last" placeholder=" " autocomplete="family-name"><span>שם משפחה</span></label>
+        </div>
+        <label class="fld"><input id="cEmail" name="email" type="email" required placeholder=" " autocomplete="email" dir="ltr"><span>אימייל *</span></label>
+        <label class="fld"><input id="cPhone" name="phone" type="tel" placeholder=" " autocomplete="tel" dir="ltr"><span>טלפון</span></label>
+        <label class="fld"><textarea id="cMsg" name="message" rows="4" placeholder=" "></textarea><span>ספרו לנו במה מדובר</span></label>
+        <p class="ferr" id="cErr" hidden></p>
+        <button class="btn btn-p fsend" type="submit"><span>שליחה</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></svg></button>
+        <div class="fdone" id="cDone" hidden><div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></div><b id="cDoneT">תודה!</b><span>קיבלנו את הפרטים ונחזור אלייך בהקדם.</span></div>
+      </form>
       <div class="social">
         <a href="https://www.facebook.com/WSPpodcast" target="_blank" rel="noopener">Facebook</a>
         <a href="https://instagram.com/wsp.sport" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.tiktok.com/@womenssportpower" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.youtube.com/channel/UC6duCxv3pdUP6j7Ch6MZTAQ" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
+
+    <!-- team member sheet -->
+    <div class="sheet-bg" id="sheetBg" hidden></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetName" hidden></div>
   </section>
 </div>
 
@@ -728,6 +957,141 @@ function renderSearch(){
   q.oninput=run;run();
 }
 
+
+/* ===== ABOUT: team, partners, form (from wsp-womensportpower.com/about-1) ===== */
+const WIX=(f,w=600,h=760)=>`https://static.wixstatic.com/media/${f}/v1/fill/w_${w},h_${h},al_t,q_85,enc_auto/p.jpg`;
+const LEADS=[
+ {n:"נועה זליבנסקי יחזקאל",r:"מייסדת ובעלת המיזם",f:"974295_fe7489b68ecd4298b446ce7f6ef248c6~mv2.jpeg",
+  roles:["מנחת הפודקאסט הרשמי","מנחת התכנית התקפה מתפרצת","שחקנית כדורסל בליגת העל"],shows:["pod","hm"],
+  q:"ספורט נשים עבורי הוא אומנות. אני מודה על הזכות להציג אותה לעולם."},
+ {n:"יסמין מנור",r:"עוזרת ניהול המיזם",f:"974295_108fdb59c26e429e924e050f35f7a104~mv2.jpg",
+  roles:["שדרנית המבזקים השבועיים","חברת פאנל בשיחה ספורטיבית"],shows:["ss"]},
+ {n:"אור אליוב הורוד",r:"פאנל שיחה ספורטיבית",f:"974295_2ba42b0a3cd94477984bf61f0f1ca23b~mv2.jpeg",
+  roles:["חבר פאנל בתכנית שיחה ספורטיבית","מאמן MMA ובעלים של סטודיו לאומנויות לחימה"],shows:["ss","vid"],
+  q:"הגיע הזמן שהספורטאיות בישראל יקבלו את הבמה וההכרה שמגיעה להן."}
+];
+const TEAM=[
+ {n:"יעל כהן",g:"rep",f:"974295_d0f1273ff75b4410aa8583836529e86c~mv2.jpg",roles:["מנהלת מערך הכתבות","הכתבת הראשית"]},
+ {n:"דניאלה ראובן",g:"host",f:"974295_b9d4a813ce984969b51398151fb15443~mv2.jpeg",roles:["מנחת מגרש מסכם, ספיישל כדורסל","שדרנית הכדורסל של המיזם"],shows:["mm"]},
+ {n:"עינב מוחרר",g:"host",f:"974295_99355fb295b14808ba8b9bc82e1c3e3f~mv2.jpg",roles:["מנחת מגרש מסכם, ספיישל כדורעף"],shows:["mm"]},
+ {n:"לורן פאר",g:"host",f:"974295_a8c6163222ee4e9f8ee987c905ff3a22~mv2.jpeg",roles:["מנחת מגרש מסכם, ספיישל כדוריד"],shows:["mm"]},
+ {n:"אופיר רבינוביץ",g:"host",f:"974295_5c9451a98b5840debd96f5f6ddde1dbc~mv2.jpeg",roles:["שדרנית קווים","מנחת מגרש מסכם, ספיישל כדורגל"],shows:["mm"]},
+ {n:"אליה עתאלי",g:"host",f:"974295_dc65a80566be4c089944ac06518cef88~mv2.jpeg",roles:["מנחת התכנית פצצה ביציע"],shows:["pb"]},
+ {n:"אורטל אורן זאבי",g:"host",f:"974295_99072ab72ecf464b92e57771a6926b4b~mv2.jpeg",roles:["שדרנית הכדורסל של המיזם"]},
+ {n:"תם שקד",g:"rep",f:"974295_7a6d89abbd064fd8bf3d14ce878e1f25~mv2.jpeg",roles:["כתבת שטח","מנחת התכנית עוברות את הגבול","האישה הראשונה בגמר נינג'ה ישראל"]},
+ {n:"מאיה שרביט",g:"rep",f:"974295_b753f7f66a9a43868fc1b7b3fa8badb1~mv2.jpeg",roles:["כתבת שטח","שחקנית כדורסל בליגת העל ובנבחרת ישראל"]},
+ {n:"דיאנה שנייר",g:"rep",f:"974295_b69be3d0d89d4d9597bb700baf747550~mv2.jpeg",roles:["כתבת","שחקנית נבחרת ישראל ברוגבי כסאות גלגלים"]},
+ {n:"שקד עמיחי",g:"rep",f:"974295_ec70f376ecdf4bbbba80bcd79109a8d5~mv2.jpeg",roles:["כתבת","ג'ודוקא בנבחרת ישראל"]},
+ {n:"נטע קומפרמן",g:"rep",f:"974295_e221d35aaf9a4b4db590b4ffdc23141d~mv2.jpeg",roles:["כתבת","מרימת משקולות אולימפית"]},
+ {n:"יעל יענקו",g:"rep",f:"974295_be31fdd2fab34730bb5a4cb301da073e~mv2.jpg",roles:["כתבת שטח"]},
+ {n:"מעיין זוליכאן",g:"pro",f:"974295_64a21a1c68e6400689c98b5b727e65e8~mv2.jpeg",roles:["הפיזיותרפיסטית הרשמית של המיזם","חברת פאנל בשיחה ספורטיבית"],shows:["ss","vid"]},
+ {n:"אהד ווקס",g:"pro",f:"974295_7d9e3f43787145f5a5b83ea7f4f422e8~mv2.jpeg",roles:["חבר פאנל בתכנית התקפה מתפרצת"],shows:["hm"]}
+];
+const TGROUPS={all:"כל הצוות",host:"מנחות ושדרניות",rep:"כתבות",pro:"פאנל ומקצוע"};
+const PARTNERS=[
+ {n:"Arno Capital",f:"974295_176be4dda1b143cc9064187a441dc264~mv2.png"},
+ {n:"WSC Sports",f:"974295_de197c37722b450daa9165379d036058~mv2.png"},
+ {n:"Donna Victoria",f:"974295_bbc56b96a21541c189daf6fadae78a88~mv2.png"},
+ {n:"Jasmine",f:"974295_522edc573fc24329b91aff579d4340cf~mv2.jpeg"},
+ {n:"אבן אל-בר",f:"974295_c657e678d97c4e49a765234b2473c1fe~mv2.jpeg"}
+];
+const JOIN=[
+ {k:"viewer",t:"צופים",d:"עקבו, שתפו ותנו לספורטאיות קהל",i:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'},
+ {k:"donate",t:"תורמים",d:"עזרו לנו להפיק עוד תוכן",i:'<path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.3 3.7 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4c3.5 0 5.8 3.3 4.5 6.8C19.5 15.4 12 20 12 20z"/>'},
+ {k:"volunteer",t:"מתנדבים",d:"צילום, עריכה, כתיבה וסושיאל",i:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>'},
+ {k:"partner",t:"שותפים אסטרטגיים",d:"חסויות, קמפיינים ואירועים",i:'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a3 3 0 0 1 3.6-.5l.6.3a3 3 0 0 0 2 .3L21 4"/><path d="m21 3 1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8"/>'}
+];
+const SUBJECTS=[["partner","שיתוף פעולה"],["sponsor","חסות"],["volunteer","התנדבות"],["donate","תרומה"],["guest","הצעה לאורחת"],["other","אחר"]];
+
+function renderAbout(){
+  const S=id=>document.getElementById(id);
+  // fan
+  S("abFan").innerHTML=[LEADS[1],LEADS[0],LEADS[2]].map(m=>`<div class="ph"><img src="${WIX(m.f,320,420)}" alt="" referrerpolicy="no-referrer"></div>`).join("")+`<div class="sticker">${TEAM.length+LEADS.length} נשים ואנשים, קול אחד</div>`;
+  // stats
+  const hrs=Math.round(ALL.reduce((s,v)=>{const t=v.dur.split(":").map(Number);return s+(t.length===3?t[0]*60+t[1]:t[0])},0)/60);
+  const stats=[[ALL.length,"פרקים וסרטונים"],[ORDER.length,"תכניות"],[hrs,"שעות תוכן"],[TEAM.length+LEADS.length,"אנשי צוות"]];
+  S("abStats").innerHTML=stats.map(([n,l])=>`<div><b data-n="${n}">0</b><span>${l}</span></div>`).join("");
+  // mission words
+  const m=S("abMission"),HL=["שוויון","לחינוך","המסוגלות","פודקאסטים,","ראיונות,"];
+  m.innerHTML=m.textContent.split(" ").map(w=>`<span class="w${HL.includes(w)?" hl":""}">${w}</span>`).join(" ");
+  // leads
+  S("abLeads").innerHTML=LEADS.map((l,i)=>`<button class="lead rv" data-lead="${i}">
+     <img src="${WIX(l.f,i?400:800,i?520:1000)}" alt="" referrerpolicy="no-referrer" loading="lazy">
+     ${i===0?`<span class="crown"><svg viewBox="0 0 24 24" fill="#fff"><path d="M3 18h18l-1.5-10-4.5 4-3-6-3 6-4.5-4z"/></svg></span>`:""}
+     <div class="lt"><span class="role">${l.r}</span><h3>${l.n}</h3>${i===0&&l.q?`<q>${l.q}</q>`:`<small>${l.roles[0]}</small>`}</div></button>`).join("");
+  // team grid
+  const grid=S("abTeamGrid");
+  const fillTeam=g=>{grid.innerHTML=TEAM.map((t,i)=>({t,i})).filter(x=>g==="all"||x.t.g===g).map(({t,i},k)=>`<button class="tm" data-tm="${i}" style="transition-delay:${k*45}ms"><div class="tp"><img src="${WIX(t.f,300,400)}" alt="" referrerpolicy="no-referrer" loading="lazy"></div><b>${t.n}</b><span>${t.roles[0]}</span></button>`).join("");
+    observe(grid.querySelectorAll(".tm"))};
+  chips(S("abTeamChips"),Object.entries(TGROUPS).map(([k,l])=>[k,l,k==="all"?TEAM.length:TEAM.filter(t=>t.g===k).length]),"all",fillTeam);
+  fillTeam("all");
+  // join
+  S("abJoin").innerHTML=JOIN.map(j=>`<button class="jt rv" data-join="${j.k}"><span class="ji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${j.i}</svg></span><b>${j.t}</b><span>${j.d}</span></button>`).join("");
+  // partners (duplicated for seamless loop)
+  const pl=PARTNERS.map(p=>`<div class="plogo"><img src="${WIX(p.f,200,200).replace("al_t","al_c")}" alt="${p.n}" referrerpolicy="no-referrer" loading="lazy"><span>${p.n}</span></div>`).join("");
+  S("abPartners").innerHTML=`<div class="pin">${pl}${pl}${pl}${pl}</div>`;
+  // subjects
+  S("cSubj").innerHTML=SUBJECTS.map(([k,l],i)=>`<button type="button" role="radio" aria-checked="${i===0}" data-subj="${k}">${l}</button>`).join("");
+
+  // interactions
+  const sec=S("s-about");
+  sec.addEventListener("click",e=>{
+    const sc=e.target.closest("[data-scroll]");
+    if(sc){e.preventDefault();if(sc.dataset.subject)setSubj(sc.dataset.subject);S(sc.dataset.scroll).scrollIntoView({behavior:"smooth",block:"start"});return}
+    const j=e.target.closest("[data-join]");
+    if(j){setSubj(j.dataset.join==="viewer"?"other":j.dataset.join);if(j.dataset.join==="viewer"){location.hash="home";return}S("abContact").scrollIntoView({behavior:"smooth"});setTimeout(()=>S("cFirst").focus({preventScroll:true}),600);return}
+    const sb=e.target.closest("[data-subj]");if(sb){setSubj(sb.dataset.subj);return}
+    const ld=e.target.closest("[data-lead]");if(ld){openSheet(LEADS[+ld.dataset.lead]);return}
+    const tm=e.target.closest("[data-tm]");if(tm){openSheet(TEAM[+tm.dataset.tm]);return}
+  });
+  S("sheetBg").onclick=closeSheet;
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+  S("cform").addEventListener("submit",submitForm);
+}
+function setSubj(k){const has=SUBJECTS.some(s=>s[0]===k);document.querySelectorAll("#cSubj [data-subj]").forEach(b=>b.setAttribute("aria-checked",b.dataset.subj===(has?k:"other")))}
+function openSheet(m){
+  const sh=document.getElementById("sheet");
+  sh.innerHTML=`<div class="grab"></div><button class="x" aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+   <div class="sh"><div class="sp"><img src="${WIX(m.f,360,450)}" alt="" referrerpolicy="no-referrer"></div><div><h3 id="sheetName">${m.n}</h3><div class="tags">${m.r?`<span>${m.r}</span>`:""}${m.g?`<span>${TGROUPS[m.g]}</span>`:""}</div></div></div>
+   ${m.q?`<p style="font-size:16px;line-height:1.5;margin:18px 0 0;font-weight:500">״${m.q}״</p>`:""}
+   <ul>${m.roles.map(r=>`<li>${r}</li>`).join("")}</ul>
+   ${m.shows?`<div class="shows">${m.shows.map(k=>`<a class="btn btn-p" href="#p-${k}" style="height:42px;font-size:13px">${ICON.play}${P[k].name}</a>`).join("")}</div>`:""}`;
+  sh.hidden=false;document.getElementById("sheetBg").hidden=false;document.body.style.overflow="hidden";
+  sh.querySelector(".x").onclick=closeSheet;sh.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeSheet));
+}
+function closeSheet(){const sh=document.getElementById("sheet");if(!sh||sh.hidden)return;sh.hidden=true;document.getElementById("sheetBg").hidden=true;document.body.style.overflow=""}
+
+/* Contact form: validates in the page. Wire FORM_ENDPOINT to the real backend
+   (e.g. a WordPress REST route / CF7 / Make webhook) before launch.               */
+const FORM_ENDPOINT=null;
+async function submitForm(e){
+  e.preventDefault();
+  const f=e.currentTarget,err=document.getElementById("cErr");
+  const first=f.querySelector("#cFirst"),email=f.querySelector("#cEmail");
+  f.querySelectorAll(".fld").forEach(l=>l.classList.remove("bad"));
+  const bad=[];if(!first.value.trim())bad.push(first);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()))bad.push(email);
+  if(bad.length){bad.forEach(i=>i.closest(".fld").classList.add("bad"));err.textContent=bad.includes(first)&&bad.includes(email)?"חסרים שם פרטי וכתובת אימייל תקינה.":bad.includes(first)?"נשמח לדעת איך קוראים לך.":"כתובת האימייל לא נראית תקינה.";err.hidden=false;bad[0].focus();return}
+  err.hidden=true;
+  const btn=f.querySelector(".fsend");btn.classList.add("busy");btn.querySelector("span").textContent="שולחת…";
+  const data=Object.fromEntries(new FormData(f));data.subject=f.querySelector('[aria-checked="true"]')?.dataset.subj;
+  try{ if(FORM_ENDPOINT){const r=await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});if(!r.ok)throw new Error(r.status)}
+       else await new Promise(r=>setTimeout(r,900)); }
+  catch(_){btn.classList.remove("busy");btn.querySelector("span").textContent="שליחה";err.textContent="השליחה לא הצליחה. בדקו את החיבור ונסו שוב.";err.hidden=false;return}
+  document.getElementById("cDoneT").textContent=`תודה, ${first.value.trim()}!`;
+  document.getElementById("cDone").hidden=false;
+}
+
+/* scroll reveals + counters + word highlight */
+let io;
+function observe(nodes){nodes.forEach(n=>io?io.observe(n):n.classList.add("in"))}
+if("IntersectionObserver" in window){
+  io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const t=en.target;t.classList.add("in");io.unobserve(t);
+    if(t.id==="abStats")t.querySelectorAll("b[data-n]").forEach(b=>{const n=+b.dataset.n,t0=performance.now();const step=now=>{const k=Math.min(1,(now-t0)/1400);b.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)});
+    if(t.id==="abMission")t.querySelectorAll(".w").forEach((w,i)=>setTimeout(()=>w.classList.add("on"),i*55));
+  }),{threshold:.2});
+}
+function aboutEnter(){observe(document.querySelectorAll("#s-about .rv:not(.in),#abStats,#abMission,#s-about .tm:not(.in)"))}
+
 /* ===== ROUTER (hash) with shared-element transition into the video page ===== */
 const screens=[...document.querySelectorAll(".screen")];
 let lastTap=null;
@@ -738,9 +1102,12 @@ function route(){
   if(h.startsWith("v-")){scr="video";renderVideo(h.slice(2));tab=""}
   else if(h.startsWith("p-")){const k=h.slice(2);if(!P[k]){location.hash="home";return}scr="program";renderProgram(k);tab=k==="pod"?"p-pod":"programs"}
   else if(["programs","search","about","home"].includes(h))scr=h;
+  else if(h==="about-contact"||h==="about-team"){scr="about";tab="about"}
+  closeSheet();
   screens.forEach(s=>s.classList.toggle("on",s.id==="s-"+scr));
   document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
   window.scrollTo(0,0);
+  if(scr==="about")requestAnimationFrame(aboutEnter);
 }
 window.addEventListener("hashchange",()=>{
   const goingVideo=location.hash.startsWith("#v-")&&lastTap&&document.startViewTransition&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -749,7 +1116,7 @@ window.addEventListener("hashchange",()=>{
   else route();
 });
 
-renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();
+renderStories();renderHero();renderPod();renderProg();renderPicks();renderShorts();renderPlist();renderSearch();renderAbout();
 hydrate();route();
 </script>
 </body>
